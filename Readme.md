@@ -1,1 +1,1 @@
-# GPMT Dashboardpanel
+# GPMT Dashboard
