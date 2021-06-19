@@ -7,7 +7,7 @@ const PhotoDashboard = () => {
     return (
         <Secure>
             <Shell>
-                <div className="p-4 w-full grid grid-cols-1 xl:grid-cols-2 gap-4">
+                <div className="p-4 w-full grid grid-cols-1 2xl:grid-cols-2 gap-4">
                     <div className="space-y-3">
                         <div className="w-full flex flex-row justify-between items-center">
                             <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Modelle</h4>
@@ -104,9 +104,9 @@ const PhotoDashboard = () => {
                     <div className="space-y-3">
                         <div className="w-full flex flex-row justify-between items-center">
                             <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Bilder</h4>
-                            <button className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
+                            <a href={`${process.env.NEXT_PUBLIC_API_URL}/admin/photo/download`} className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
                                 Download
-                            </button>
+                            </a>
                         </div>
                         <div className="flex flex-row">
                             <input

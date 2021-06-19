@@ -10,7 +10,14 @@ const Dashboard = () => {
             <Shell>
                 <div className="p-4 w-full grid grid-cols-1 grid-rows-auto xl:grid-cols-2 2xl:grid-cols-3 gap-3 xl:gap-4">
                     <div className="space-y-2">
-                        <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Nutzer</h4>
+                    <div className="w-full flex flex-row">
+                            <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Nutzer</h4>
+                            <div className="ml-auto text-gray-700 hover:text-gray-900 self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                                </svg>
+                            </div>
+                        </div>
                         <div className="grid grid-cols-2 w-full gap-2">
                             <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-sm font-medium">Aktive Nutzer</h3>
@@ -27,7 +34,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Daten</h4>
+                        <div className="w-full flex flex-row">
+                            <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Daten</h4>
+                            <div className="ml-auto text-gray-700 hover:text-gray-900 self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                                </svg>
+                            </div>
+                        </div>
                         <div className="grid grid-cols-2 w-full gap-2">
                             <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-sm font-medium">Geschlecht</h3>
@@ -44,7 +58,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Miktionsmodell</h4>
+                        <div className="w-full flex flex-row">
+                            <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Miktion</h4>
+                            <div className="ml-auto text-gray-700 hover:text-gray-900 self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                                </svg>
+                            </div>
+                        </div>
                         <div className="grid grid-cols-2 w-full gap-2">
                             <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-sm font-medium">Genauigkeit</h3>
@@ -55,7 +76,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Bildklassifikation</h4>
+                        <div className="w-full flex flex-row">
+                            <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Bildklassifikation</h4>
+                            <div className="ml-auto text-gray-700 hover:text-gray-900 self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                                </svg>
+                            </div>
+                        </div>
                         <div className="grid grid-cols-2 w-full gap-2">
                             <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-sm font-medium">Genauigkeit</h3>
@@ -66,7 +94,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Fragebogen</h4>
+                    <div className="w-full flex flex-row">
+                            <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Fragebogen</h4>
+                            <div className="ml-auto text-gray-700 hover:text-gray-900 self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+                                </svg>
+                            </div>
+                        </div>
                         <div className="grid grid-cols-2 w-full gap-2">
                             <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-sm font-medium">Vorerkrankungen</h3>

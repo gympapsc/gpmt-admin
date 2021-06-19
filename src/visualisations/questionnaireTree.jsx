@@ -1,258 +1,236 @@
 import React, { useEffect, useRef } from "react"
 import * as d3 from "d3"
 
-const QuestionnaireTree = ({treeData}) => {
+const QuestionnaireTree = ({data, selectNode}) => {
     let container = useRef(null)
 
 
+    const clickedNode = (e, data) => {
+        console.log(data)
+        selectNode(data.data)
+    }
+
     useEffect(() => {
-        // let margin = {
-        //     top: 20,
-        //     right: 20,
-        //     bottom: 30,
-        //     left: 90
-        // }
-        // let width = container.current.width - margin.left - margin.right
-        // let height = container.current.height - margin.top - margin.bottom
-
-        // let svg = d3.select(container.current)
-        //     .append("g")
-        //         .attr("transform", `translate(${margin.left}, ${margin.top})`)
+        // let data = data || {
+        //     "name": "disease",
+        //     "type": "string",
+        //     "condition": {},
+        //     "next": [
+        //         {
+        //             "name": "age",
+        //             "type": "number",
+        //             "condition": {
+        //                 "eq": "ms"
+        //             },
+        //             "next": [
+        //                 {
+        //                     "name": "age",
+        //                     "type": "radio",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
         
-        // let treemap = d3.tree().size([height, width])
-
-        // let root = d3.hierarchy(treeData, d => d.next)
-        // root.x0 = height / 2
-        // root.y0 = 0
+        //                     ]
+        //                 },
+        //                 {
+        //                     "name": "age",
+        //                     "type": "number",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
+        //                         {
+        //                             "name": "age",
+        //                             "type": "radio",
+        //                             "condition": {
+        //                                 "eq": "ms"
+        //                             },
+        //                             "next": [
+                
+        //                             ]
+        //                         },
+        //                         {
+        //                             "name": "age",
+        //                             "type": "number",
+        //                             "condition": {
+        //                                 "eq": "ms"
+        //                             },
+        //                             "next": [
+                
+        //                             ]
+        //                         }
+        //                     ]
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             "name": "age",
+        //             "type": "number",
+        //             "condition": {
+        //                 "eq": "ms"
+        //             },
+        //             "next": [
+        //                 {
+        //                     "name": "age",
+        //                     "type": "number",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
         
-        // function collapse(d) {
-        //     if(d.next) {
-        //         d._next = d.next
-        //         d._next.forEach(collapse)
-        //         d.children = null
-        //     }
+        //                     ]
+        //                 },
+        //                 {
+        //                     "name": "age",
+        //                     "type": "number",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
+        
+        //                     ]
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             "name": "age",
+        //             "type": "number",
+        //             "condition": {
+        //                 "eq": "ms"
+        //             },
+        //             "next": [
+        //                 {
+        //                     "name": "age",
+        //                     "type": "number",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
+        
+        //                     ]
+        //                 },
+        //                 {
+        //                     "name": "age",
+        //                     "type": "number",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
+        
+        //                     ]
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             "name": "age",
+        //             "type": "number",
+        //             "condition": {
+        //                 "eq": "ms"
+        //             },
+        //             "next": [
+        //                 {
+        //                     "name": "age",
+        //                     "type": "number",
+        //                     "condition": {
+        //                         "eq": "ms"
+        //                     },
+        //                     "next": [
+        
+        //                     ]
+        //                 }
+        //             ]
+        //         }
+        //     ]
         // }
 
-        // function update(source) {
-        //     let treeData = tree
-        // }
+        console.log("TREE DATA", data)
 
+        const width = container?.current.clientWidth
 
-        // root.children.forEach(collapse)
+        const root = d3.hierarchy(data, d => d.next)
+        root.dx = 10
+        root.dy = width / (root.height + 1)
 
-        var treeData =
-        {
-            "name": "Top Level",
-            "children": [
-                { 
-                    "name": "Level 2: A",
-                    "children": [
-                    { "name": "Son of A" },
-                    { "name": "Daughter of A" },
-                    { "name": "Daughter 2 of A" },
-                    { "name": "Daughter 3 of A" },
-                    ]
-                },
-                { 
-                    "name": "Level 2: B",
-                    "children": [
-                        {"name": "Son of b"}
-                    ]
-                }
-            ]
-        };
+        const tree = d3.tree()
+            .nodeSize([root.dx, root.dy])
+            .separation((a, b) => a.parent == b.parent ? 8 : 12)
+        (root)
 
-        // Set the dimensions and margins of the diagram
-        var margin = {top: 20, right: 90, bottom: 30, left: 90},
-            width = container.current.clientWidth - margin.left - margin.right,
-            height = container.current.clientHeight - margin.top - margin.bottom;
+        let x0 = Infinity
+        let x1 = -Infinity
 
-        // append the svg object to the body of the page
-        // appends a 'group' element to 'svg'
-        // moves the 'group' element to the top left margin
-        var svg = d3.select(container.current)
-        .append("g")
-            .attr("transform", "translate("
-                + margin.left + "," + margin.top + ")");
+        tree.each(d => {
+            if (d.x > x1) x1 = d.x
+            if (d.x < x0) x0 = d.x
+        })
 
-        var i = 0,
-            duration = 750,
-            root;
-
-        // declares a tree layout and assigns the size
-        var treemap = d3.tree().size([height, width]);
-
-        // Assigns parent, children, height, depth
-        root = d3.hierarchy(treeData, function(d) { return d.children; });
-        root.x0 = height / 2;
-        root.y0 = 0;
-
-        // Collapse after the second level
-        // root.children.forEach(collapse);
-
-        update(root);
-
-        // Collapse the node and all it's children
-        function collapse(d) {
-            if(d.children) {
-                d._children = d.children
-                d._children.forEach(collapse)
-                d.children = null
-            }
+        const margin = {
+            top: 10,
+            right: 10,
+            left: 25,
+            bottom: 20
         }
 
-        function update(source) {
-            // Assigns the x and y position for the nodes
-            var treeData = treemap(root);
+        const svg = d3.select(container?.current)
+            .append("g")
+                .attr("transform", `translate(${margin.left}, ${margin.top})`)
+        
+        const g = svg.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 16)
+            .attr("transform", `translate(${tree.dy / 3}, ${tree.dx - x0})`)
 
-            // Compute the new tree layout.
-            var nodes = treeData.descendants(),
-                links = treeData.descendants().slice(1);
-
-            // Normalize for fixed-depth.
-            nodes.forEach(function(d){ d.y = d.depth * 180});
-
-            // ****************** Nodes section ***************************
-
-            // Update the nodes...
-            var node = svg.selectAll('g.node')
-                .data(nodes, function(d) {return d.id || (d.id = ++i); });
-
-            // Enter any new nodes at the parent's previous position.
-            var nodeEnter = node.enter().append('g')
-                .attr('class', 'node')
-                .attr("transform", function(d) {
-                    return "translate(" + source.y0 + "," + source.x0 + ")";
-                })
-                .on('click', click);
-
-            // Add Circle for the nodes
-            nodeEnter.append('circle')
-                .attr('class', 'node')
-                .attr('r', 1e-5)
-                .style("fill", function(d) {
-                    return d._children ? "lightsteelblue" : "#fff";
-                });
-
-            // Add labels for the nodes
-            nodeEnter.append('text')
-                .attr("dy", ".35em")
-                .attr("x", function(d) {
-                    return d.children || d._children ? -13 : 13;
-                })
-                .attr("text-anchor", function(d) {
-                    return d.children || d._children ? "end" : "start";
-                })
-                .text(function(d) { return d.data.name; });
-
-            // UPDATE
-            var nodeUpdate = nodeEnter.merge(node);
-
-            // Transition to the proper position for the node
-            nodeUpdate.transition()
-                .duration(duration)
-                .attr("transform", function(d) { 
-                    return "translate(" + d.y + "," + d.x + ")";
-                });
-
-            // Update the node attributes and style
-            nodeUpdate.select('circle.node')
-                .attr('r', 10)
-                .style("fill", function(d) {
-                    return d._children ? "lightsteelblue" : "#fff";
-                })
-                .attr('cursor', 'pointer');
-
-
-            // Remove any exiting nodes
-            var nodeExit = node.exit().transition()
-                .duration(duration)
-                .attr("transform", function(d) {
-                    return "translate(" + source.y + "," + source.x + ")";
-                })
-                .remove();
-
-            // On exit reduce the node circles size to 0
-            nodeExit.select('circle')
-                .attr('r', 1e-6);
-
-            // On exit reduce the opacity of text labels
-            nodeExit.select('text')
-                .style('fill-opacity', 1e-6);
-
-            // ****************** links section ***************************
-
-            // Update the links...
-            var link = svg.selectAll('path.link')
-                .data(links, function(d) { return d.id; });
-
-            // Enter any new links at the parent's previous position.
-            var linkEnter = link.enter().insert('path', "g")
-                .attr("class", "link")
-                .attr("fill", "none")
-                .attr("stroke", "#000")
-                .attr("stroke-width", "5")
-                .attr('d', function(d){
-                    var o = {x: source.x0, y: source.y0}
-                    return diagonal(o, o)
-                });
-
-            // UPDATE
-            var linkUpdate = linkEnter.merge(link);
-
-            // Transition back to the parent element position
-            linkUpdate.transition()
-                .duration(duration)
-                .attr('d', function(d){ return diagonal(d, d.parent) });
-
-            // Remove any exiting links
-            var linkExit = link.exit().transition()
-                .duration(duration)
-                .attr('d', function(d) {
-                    var o = {x: source.x, y: source.y}
-                    return diagonal(o, o)
-                })
-                .remove();
-
-            // Store the old positions for transition.
-            nodes.forEach(function(d){
-                d.x0 = d.x;
-                d.y0 = d.y;
-            });
-
-            // Creates a curved (diagonal) path from parent to the child nodes
-            function diagonal(s, d) {
-                let path = `M ${s.y} ${s.x}
-                        C ${(s.y + d.y) / 2} ${s.x},
-                        ${(s.y + d.y) / 2} ${d.x},
-                        ${d.y} ${d.x}`
-
-                return path
-            }
+        const link = g.append("g")
+            .attr("fill", "none")
+            .attr("stroke", "#888")
+            .attr("stroke-width", 3)
+        .selectAll("path")
+            .data(tree.links())
+            .join("path")
+            .attr("d", d3.linkHorizontal()
+                .x(d => d.y)
+                .y(d => d.x))
             
+        const node = g.append("g")
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-width", 5)
+        .selectAll("g")
+            .data(tree.descendants())
+            .join("g")
+            .attr("transform", d => `translate(${d.y}, ${d.x})`)
 
-            // Toggle children on click.
-            function click(d) {
-                if (d.children) {
-                    d._children = d.children;
-                    d.children = null;
-                } else {
-                    d.children = d._children;
-                    d._children = null;
-                }
-                update(d);
-            }
-        }
+        node.append("g")
+            .append("circle")
+            .attr("stroke-width", 3)
+            .attr("stroke", d => 
+                d.data.type === "number" ? "green" : 
+                d.data.type === "string" ? "blue" : 
+                d.data.type === "radio" ? "violet" : "gray")
+            .attr("fill", "white")
+            .attr("r", 10)
+            .on("click", clickedNode)
+        
+        node.append("text")
+            .attr("dy", "0.31em")
+            .attr("x", d => d.children ? -14 : 14)
+            .attr("text-anchor", d => d.children ? "end" : "start")
+            .text(d => d.data.name)
+            .on("click", clickedNode)
+            .clone(true).lower()
+            .attr("stroke", "#d1d5db")
+            .attr("font-size", 16)
+        
+
 
         return () => {
             if(container?.current && container.current.children) {
-
-                container.current.children.forEach(child => {
+                for(let child of container.current.children) {
                     child.remove()
-                })
+                }
             }
         }
-    }, [true])
+    }, [data])
 
     return (
         <svg className="w-full h-full" ref={container}></svg>
