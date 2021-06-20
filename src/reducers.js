@@ -3,7 +3,7 @@ const initialState = {
     photos: null,
     users: null,
     forecastModels: null,
-    photoModels: null,
+    photoClassificationModels: null,
     questionnaire: null
 }
 
@@ -39,10 +39,28 @@ const reducer = (state=initialState, action) => {
                 ...state,
                 questionnaire: action.payload
             }
-        case "SET_PHOTS_MODELS":
+        case "SET_PHOTO_CLASSIFICATION_MODELS":
             return {
                 ...state,
-                photoModels: action.payload
+                photoClassificationModels: action.payload
+            }
+        case "ADD_PHOTO_CLASSIFICATION_MODEL":
+            return {
+                ...state,
+                photoClassificationModels: [
+                    ...state.photoClassificationModels,
+                    action.payload
+                ]
+            }
+        case "DELETE_PHOTO_CLASSIFICATION_MODEL":
+            return {
+                ...state,
+                photoClassificationModels: state.photoClassificationModels.filter(m => m._id !== action.payload.id)
+            }
+        case "DELETE_FORECAST_MODEL":
+            return {
+                ...state,
+                forecastModels: state.forecastModels.filter(m => m._id !== action.payload.id)
             }
         case "ACTIVATE_FORECAST_MODEL":
             return {
@@ -61,11 +79,11 @@ const reducer = (state=initialState, action) => {
                     }
                 ]
             }
-        case "ACTIVATE_PHOTO_MODEL":
+        case "ACTIVATE_PHOTO_CLASSIFICATION_MODEL":
             return {
                 ...state,
-                photoModel: [
-                    ...state.photoModel
+                photoClassificationModels: [
+                    ...state.photoClassificationModels
                         .filter(m => m._id !== action.payload.id)
                         .map(m => ({
                                 ...m,
@@ -73,7 +91,7 @@ const reducer = (state=initialState, action) => {
                             })
                         ),
                     {
-                        ...state.photoModel.find(m => m._id === action.payload.id),
+                        ...state.photoClassificationModels.find(m => m._id === action.payload.id),
                         active: true
                     }
                 ]

@@ -1,5 +1,4 @@
 import axios from "axios"
-import FileDownload from "js-file-download"
 
 let client
 
@@ -12,19 +11,21 @@ const api = {
     },
     signInAdmin: (password) => client.post("/signin/admin", { password }),
     getAdminInfo: () => client.get("/admin"),
-    getPhotos: () => client.get("/admin/photos"),
+    getPhotos: () => client.get("/admin/photo"),
     getUsers: () => client.get("/admin/data/users"),
     getForecastModels: () => client.get("/admin/data/model"),
-    getPhotoModels: () => client.get("/admin/photo/model"),
+    getPhotoClassificationModels: () => client.get("/admin/photo/model"),
     getQuestionnaire: () => client.get("/admin/questionnaire"),
-    activateForecastModel: () => client.post("/admin/data/model/activate?"),
-    activatePhotoModel: () => client.post("/admin/photo/model/activate?"),
+    activateForecastModel: id => client.post(`/admin/data/model/${id}/activate`),
+    activatePhotoModel: id => client.post(`/admin/photo/model/${id}/activate`),
+    deletePhotoClassificationModel: id => client.delete(`/admin/photo/model/${id}`),
+    deleteForecastModel: id => client.delete(`/admin/data/model/${id}`),
     uploadForecastModel: formData => client.post("/admin/data/model", formData, {
         headers: {
             "Content-Type": "multipart/form-data"
         }
     }),
-    uploadPhotoModel: formData => client.post("/admin/photo/model", formData, {
+    uploadPhotoClassificationModel: formData => client.post("/admin/photo/model", formData, {
         headers: {
             "Content-Type": "multipart/form-data"
         }

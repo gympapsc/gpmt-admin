@@ -1,28 +1,36 @@
 import React, { useRef } from "react"
-import Link from "next/link"
-import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 import Secure from "../components/secure"
 import Shell from "../components/shell"
 import { useForecastModels, useUsers } from "../hooks"
 import api from "../api/http"
+import { activateForecastModel, deleteForecastModel } from "../actions"
 
 const DataDashboard = () => {
     let uploadFileRef = useRef(null)
-    let bearer = useSelector(state => state.bearer)
     let forecastModels = useForecastModels()
+        .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf())
+    let dispatch = useDispatch()
     let users = useUsers()
-
 
 
     let selectedModel = e => {
         e.preventDefault()
         let formData = new FormData()
         formData.append("model", uploadFileRef.current.files[0])
-        api.init(bearer)
-        // TODO check response and add model
         api.uploadForecastModel(formData)
             .then(res => res.data)
+            .then(data => {
+                if(data.model) {
+                    dispatch(addForecastModel(data.model))
+                } else if(data.err) {
+                    dispatch({
+                        type: "UPLOAD_ERROR"
+                    })
+                }
+            })
+            .catch(err => dispatch({ type: "UPLOAD_ERROR" }))
     }
 
     return (
@@ -72,20 +80,20 @@ const DataDashboard = () => {
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
-                                                {forecastModels.map(model => 
-                                                    <tr key={model._id}>
+                                                {forecastModels.map(m => 
+                                                    <tr key={m._id}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <div className="flex items-center text-sm">
-                                                                {model.timestamp}
+                                                                {m.timestamp}
                                                             </div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{model.timestamp}</div>
+                                                            <div className="text-sm text-gray-900">{new Date(m.timestamp).toLocaleTimeString()}</div>
                                                             <div className="text-sm text-gray-500">13:35</div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             {
-                                                                !model.active && 
+                                                                m.active && 
                                                                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                                     Aktiv
                                                                 </span>
@@ -93,16 +101,16 @@ const DataDashboard = () => {
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
                                                             {
-                                                                model.active && 
-                                                                <button className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
+                                                                m.active ||
+                                                                <button onClick={e => dispatch(activateForecastModel(m._id))} className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
                                                                     Aktivieren
                                                                 </button>
                                                             }
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
                                                             {
-                                                                model.active && 
-                                                                <button className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
+                                                                m.active ||
+                                                                <button onClick={e => dispatch(deleteForecastModel(m._id))} className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
                                                                     Löschen
                                                                 </button>
                                                             }

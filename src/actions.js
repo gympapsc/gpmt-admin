@@ -27,13 +27,16 @@ export const signOutAdmin = () => async (dispatch, getState, { api }) => {
 export const authenticateAdmin = () => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
         api.init()
-        let { data: { admin, err }} = await api.getAdminInfo()
+        try {
+            let { data: { admin, err }} = await api.getAdminInfo()
+            if(!admin) {
+                return redirect("/signin")
+            }
 
-        if(!admin) {
+            dispatch(setAdmin(admin))
+        } catch {
             return redirect("/signin")
         }
-
-        dispatch(setAdmin(admin))
     }
 }
 
@@ -66,8 +69,8 @@ export const setForecastModels = (models) => ({
     payload: models
 })
 
-export const setPhotoModels = (models) => ({
-    type: "SET_PHOTO_MODELS",
+export const setPhotoClassificationModels = (models) => ({
+    type: "SET_PHOTO_CLASSIFICATION_MODELS",
     payload: models
 })
 
@@ -101,10 +104,10 @@ export const loadForecastModels = () => async (dispatch, getState, { api }) => {
     }
 }
 
-export const loadPhotoModels = () => async (dispatch, getState, { api }) => {
+export const loadPhotoClassificationModels = () => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
-        let { data: { models }} = await api.getPhotoModels()
-        dispatch(setPhotoModels(models))
+        let { data: { models }} = await api.getPhotoClassificationModels()
+        dispatch(setPhotoClassificationModels(models))
     }
 }
 
@@ -153,11 +156,33 @@ export const activateForecastModel = id => async (dispatch, getState, { api }) =
     })
 }
 
+export const deleteForecastModel = id => async (dispatch, getState, { api }) => {
+    let {ok, err} = await api.deleteForecastModel(id)
+
+    dispatch({
+        type: "DELETE_FORECAST_MODEL",
+        payload: {
+            id
+        }
+    })
+}
+
 export const activatePhotoModel = id => async (dispatch, getState, { api }) => {
     let {ok, err} = await api.activatePhotoModel(id)
     
     dispatch({
-        type: "ACTIVATE_PHOTO_MODEL",
+        type: "ACTIVATE_PHOTO_CLASSIFICATION_MODEL",
+        payload: {
+            id
+        }
+    })
+}
+
+export const deletePhotoClassificationModel = id => async (dispatch, getState, { api}) => {
+    let { ok, err } = await api.deletePhotoClassificationModel(id)
+
+    dispatch({
+        type: "DELETE_PHOTO_CLASSIFICATION_MODEL",
         payload: {
             id
         }
@@ -204,3 +229,22 @@ export const addCondition = (question_id, condition) => async (dispatch, getStat
         })
     }
 }
+
+
+export const addPhotoClassificationModel = model => ({
+    type: "ADD_PHOTO_CLASSIFICATION_MODEL",
+    payload: {
+        timestamp: model.timestamp,
+        active: model.active,
+        _id: model._id
+    }
+})
+
+export const addForecastModel = model => ({
+    type: "ADD_FORECAST_MODEL",
+    payload: {
+        timestamp: model.timestamp,
+        active: model.active,
+        _id: model._id
+    }
+})

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { 
     authenticateAdmin,
     loadForecastModels,
-    loadPhotoModels,
+    loadPhotoClassificationModels,
     loadPhotos,
     loadUsers,
     loadQuestionnaire
@@ -36,17 +36,17 @@ export function useForecastModels() {
     return forecastModels || []
 }
 
-export function usePhotoModels() {
+export function useClassificationModels() {
     let dispatch = useDispatch()
-    let photoModels = useSelector(state => state.photoModels)
+    let models = useSelector(state => state.photoClassificationModels)
 
     useEffect(() => {
-        if(typeof window !== "undefined" && photoModels === null) {
-            dispatch(loadPhotoModels())
+        if(typeof window !== "undefined" && models === null) {
+            dispatch(loadPhotoClassificationModels())
         }
     })
 
-    return photoModels || []
+    return models || []
 }
 
 export function useUsers() {
