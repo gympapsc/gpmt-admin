@@ -144,7 +144,16 @@ const DataDashboard = () => {
                                                     Nutzer ID
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Nachname
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Vorname
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Geburtsdatum
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Anmeldedatum
                                                 </th>
                                                 <th scope="col" className="relative px-6 py-3">
                                                     <span className="sr-only">Download</span>
@@ -157,8 +166,17 @@ const DataDashboard = () => {
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         {user._id}
                                                     </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        {user.surname}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        {user.firstname}
+                                                    </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        {user.birthDay}
+                                                        {new Date(user.birthDate).toLocaleDateString()}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        {new Date(user.timestamp).toLocaleDateString()}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
                                                         <button  className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">

@@ -88,5 +88,5 @@ export function useQuestionnaire() {
         }
     })
 
-    return questionnaire ||  {}
+    return questionnaire ||  []
 }

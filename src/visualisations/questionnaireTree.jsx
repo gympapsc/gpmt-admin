@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import * as d3 from "d3"
 
 const QuestionnaireTree = ({data, selectNode}) => {
+    let [activeId, setActiveId] = useState(null)
+
     let container = useRef(null)
 
 
     const clickedNode = (e, data) => {
         console.log(data)
+        setActiveId(data.data._id)
         selectNode(data.data)
     }
 
@@ -207,7 +210,7 @@ const QuestionnaireTree = ({data, selectNode}) => {
                 d.data.type === "number" ? "green" : 
                 d.data.type === "string" ? "blue" : 
                 d.data.type === "radio" ? "violet" : "gray")
-            .attr("fill", "white")
+            .attr("fill", d => d.data._id === activeId ? "orange" : "white")
             .attr("r", 10)
             .on("click", clickedNode)
         
@@ -230,7 +233,7 @@ const QuestionnaireTree = ({data, selectNode}) => {
                 }
             }
         }
-    }, [data])
+    }, [data, activeId])
 
     return (
         <svg className="w-full h-full" ref={container}></svg>

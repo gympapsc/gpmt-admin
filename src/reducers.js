@@ -39,6 +39,36 @@ const reducer = (state=initialState, action) => {
                 ...state,
                 questionnaire: action.payload
             }
+        case "ADD_CONDITION":
+            console.log(state.questionnaire.find(q => q._id === action.payload.question_id).condition, [
+                ...state.questionnaire.find(q => q._id === action.payload.question_id).condition,
+                action.payload.condition
+            ], {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
+                    {
+                        ...state.questionnaire.find(q => q._id === action.payload.question_id),
+                        condition: [
+                            ...state.questionnaire.find(q => q._id === action.payload.question_id).condition,
+                            action.payload.condition
+                        ]
+                    }
+                ]
+            })
+            return {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
+                    {
+                        ...state.questionnaire.find(q => q._id === action.payload.question_id),
+                        condition: [
+                            ...state.questionnaire.find(q => q._id === action.payload.question_id).condition,
+                            action.payload.condition
+                        ]
+                    }
+                ]
+            }
         case "SET_PHOTO_CLASSIFICATION_MODELS":
             return {
                 ...state,

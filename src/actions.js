@@ -114,34 +114,10 @@ export const loadPhotoClassificationModels = () => async (dispatch, getState, { 
 export const loadQuestionnaire = () => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
         let { data: { questionnaire }} = await api.getQuestionnaire()
-        dispatch(setQuestionnaire(ravelTree(questionnaire)))
+        dispatch(setQuestionnaire(questionnaire))
     }
 }
 
-const ravelTree = questions => {
-    let root = questions.filter(q => q.root)[0]
-    function ravelBranch(root) {
-        if(root) {
-            console.log(root)
-            for(let i = 0; i < root.next.length; i++) {
-                if(!root.next[i].name) {
-                    next = questions.filter(q => q._id === root.next[i])[0]
-                    if(!next) {
-                        continue
-                    }
-                    root.next[i] = next
-                }
-                if(root.next[i]) {
-                    root.next[i] = ravelBranch(root.next[i])
-                }
-            }
-            return root
-        }
-        throw new Error("No root")
-    }
-
-    return ravelBranch(root)
-}
 
 
 
@@ -216,15 +192,15 @@ export const deleteQuestion = _id => async (dispatch, getState, { api }) => {
 
 
 
-export const addCondition = (question_id, condition) => async (dispatch, getState, { api }) => {
-    let { data: {ok, err}} = await api.addCondition(question_id, condition)
+export const addCondition = (question_id, c) => async (dispatch, getState, { api }) => {
+    let { data: {ok, err}} = await api.addCondition(question_id, c)
 
     if(ok) {
         dispatch({
             type: "ADD_CONDITION",
             payload: {
                 question_id,
-                condition
+                condition: c
             }
         })
     }
