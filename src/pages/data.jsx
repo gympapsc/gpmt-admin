@@ -84,7 +84,7 @@ const DataDashboard = () => {
                                                     <tr key={m._id}>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <div className="flex items-center text-sm">
-                                                                {m.timestamp}
+                                                                {m._id}
                                                             </div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">

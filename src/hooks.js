@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { 
     authenticateAdmin,
@@ -62,13 +62,16 @@ export function useUsers() {
     return users || []
 }
 
-export function usePhotos() {
+export function usePhotos(label) {
     let dispatch = useDispatch()
+    let [prev, setPrev] = useState(null)
     let photos = useSelector(state => state.photos)
 
+
     useEffect(() => {
-        if(typeof window !== "undefined" && photos === null) {
-            dispatch(loadPhotos())
+        if(typeof window !== "undefined" && (photos === null || label !== prev)) {
+            dispatch(loadPhotos(label))
+            setPrev(label)
         }
     })
 

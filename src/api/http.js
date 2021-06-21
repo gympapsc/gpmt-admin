@@ -11,7 +11,7 @@ const api = {
     },
     signInAdmin: (password) => client.post("/signin/admin", { password }),
     getAdminInfo: () => client.get("/admin"),
-    getPhotos: () => client.get("/admin/photo"),
+    getPhotos: label => label ? client.get(`/admin/photo?label=${label}`) : client.get("/admin/photo"),
     getUsers: () => client.get("/admin/data/users"),
     getForecastModels: () => client.get("/admin/data/model"),
     getPhotoClassificationModels: () => client.get("/admin/photo/model"),

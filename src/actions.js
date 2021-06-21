@@ -82,9 +82,9 @@ export const setQuestionnaire = (questions) => ({
 
 
 
-export const loadPhotos = () => async (dispatch, getState, { api }) => { 
-    if(typeof window !== "undefined") {
-        let { data: { photos }} = await api.getPhotos()
+export const loadPhotos = label => async (dispatch, getState, { api }) => { 
+    if(typeof window !== "undefined") { 
+        let { data: { photos }} = await api.getPhotos(label)
         dispatch(setPhotos(photos))
     }
 }

@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import api from "../api/http"
 
 import { useDispatch } from "react-redux"
@@ -15,9 +15,11 @@ import { activatePhotoModel, deletePhotoClassificationModel, addPhotoClassificat
 const PhotoDashboard = () => {
     let uploadFileRef = useRef(null)
     let dispatch = useDispatch()
+    let [photoQuery, setPhotoQuery] = useState("")
     let classificationModels = useClassificationModels()
         .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf())
-    let photos = usePhotos()
+    let photos = usePhotos(photoQuery)
+        .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf())
 
     const selectedModel = e => {
         let formData = new FormData()
@@ -163,6 +165,8 @@ const PhotoDashboard = () => {
                     </div>
                     <div className="flex flex-row">
                         <input
+                            onChange={e => setPhotoQuery(e.target.value)}
+                            value={photoQuery}
                             type="text"
                             className="border border-gray-300 h-12 w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-transparent focus:ring-indigo-500" 
                             placeholder="Bildgruppe" />
@@ -187,45 +191,39 @@ const PhotoDashboard = () => {
                                                     Korrektur
                                                 </th>
                                                 <th scope="col" className="relative px-6 py-3">
-                                                    <span className="sr-only">Bearbeiten</span>
-                                                </th>
-                                                <th scope="col" className="relative px-6 py-3">
-                                                    <span className="sr-only">Löschen</span>
+                                                    <span className="sr-only">Download</span>
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            <tr>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center">
-                                                    <div className="flex-shrink-0 h-10 w-10">
-                                                        <img className="h-10 w-10" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg" alt="" />
+                                            {photos.map(p => (
+                                                <tr key={p._id}>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <div className="flex-shrink-0 h-10 w-10">
+                                                            <img className="h-10 w-10 rounded-sm" src={`${process.env.NEXT_PUBLIC_API_URL}/admin/photo/${p._id}`} alt="" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">Samstag, 01.05.21</div>
-                                                    <div className="text-sm text-gray-500">13:35</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                    Banane
-                                                </span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    -
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
-                                                    <a href="#" className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
-                                                        Bearbeiten
-                                                    </a>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
-                                                    <a href="#" className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
-                                                        Löschen
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="text-sm text-gray-900">Samstag, 01.05.21</div>
+                                                        <div className="text-sm text-gray-500">13:35</div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                        {p.name}
+                                                    </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        -
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
+                                                        <a href={`${process.env.NEXT_PUBLIC_API_URL}/admin/photo/${p._id}/download`} className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
+                                                            Download
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
                                 </div>
