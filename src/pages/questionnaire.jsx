@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import Link from "next/link"
 import { Listbox, Switch, Transition } from "@headlessui/react"
 import { SelectorIcon, CheckIcon } from "@heroicons/react/solid"
@@ -13,44 +13,38 @@ import { useQuestionnaire } from "../hooks"
 
 import {
     addCondition,
-    addQuestion, deleteQuestion
+    addQuestion, 
+    deleteCondition, 
+    deleteQuestion,
+    updateQuestion
 } from "../actions"
-import e from "cors"
 
 const categories = {
-    number: { id: 1, name: "Ziffern", key: "number"},
-    radio: { id: 2, name: "Auswahl", key: "radio"},
-    string: {id: 3, name: "Zeichenkette", key: "string"},
-    bool: { id: 4, name: "Bool'sche Auswahl", key: "book"}
+    number: { id: 1, name: "Ziffern", key: "number" },
+    radio: { id: 2, name: "Auswahl", key: "radio" },
+    string: {id: 3, name: "Zeichenkette", key: "string" },
+    bool: { id: 4, name: "Bool'sche Auswahl", key: "book" }
 }
 
 const conditionTypes = [
     "eq",
     "gt",
-    "lt"
+    "lt",
+    "true",
+    "false"
 ]
 
 const QuestionnaireDashboard = () => {
     let dispatch = useDispatch()
     let questionnaire = useQuestionnaire()
 
-    let [category, setCategory] = useState(categories["number"])
-    
     let [type, setType] = useState(conditionTypes[0])
     let [conditionValue, setConditionValue] = useState("")
-
 
     let [newName, setNewName] = useState("")
     let [newType, setNewType] = useState(categories["number"])
 
     let [questionId, setQuestionId] = useState(questionnaire.find(q => q.root)?._id)
-
-    let updateQuestion = update => {
-        setQuestion({
-            ...question,
-            ...update
-        })
-    }
 
     let newCondition = e => {
         e.preventDefault()
@@ -61,7 +55,15 @@ const QuestionnaireDashboard = () => {
         }))
     }
 
+    let removeCondition = id => e => {
+        e.preventDefault()
+        e.stopPropagation()
+        dispatch(deleteCondition(question._id, id))
+    }
+
     let createQuestion = e => {
+        e.preventDefault()
+        e.stopPropagation()
         dispatch(addQuestion(question._id, {
             name: newName,
             type: newType.key
@@ -78,14 +80,20 @@ const QuestionnaireDashboard = () => {
         root: true
     }
 
+    let category = categories[question.type || "number"]
+
+    useEffect(() => {
+        setQuestionId(questionnaire.find(q => q.root)?._id)
+    }, [questionnaire])
+
     return (
         <Shell>
             <div className="grid grid-cols-2 xl:grid-cols-3 w-full h-full">
                 <main className="bg-gray-300 xl:col-span-2">
-                    <QuestionnaireTree data={ravelTree(questionnaire)} selectNode={q => setQuestionId(q._id)}/>
+                    <QuestionnaireTree data={ravelTree(questionnaire)} selectNode={q => setQuestionId(q._id)} active={question._id}/>
                 </main>
                 <aside className="bg-gray-100 border-l border-gray-300 p-3 xl:p-5 2xl:p-8">
-                    <form className="flex flex-col h-full space-y-4">
+                    <div className="flex flex-col h-full space-y-4">
                         <div className="flex flex-row justify-between items-center">
                             <div className="mb-1">
                                 <h2 className="text-2xl font-semibold">{question?.name}</h2>
@@ -97,7 +105,11 @@ const QuestionnaireDashboard = () => {
                                     Wurzel
                                 </span>
                                 :
-                                <button onClick={e => dispatch(deleteQuestion(question._id))} disabled={question.root} title="Frage und alle Folgefragen löschen" className="text-red-700 p-2 rounded-lg hover:bg-red-100">
+                                <button onClick={e => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    dispatch(deleteQuestion(question._id))
+                                }} disabled={question.root} title="Frage und alle Folgefragen löschen" className="text-red-700 p-2 rounded-lg hover:bg-red-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -107,7 +119,7 @@ const QuestionnaireDashboard = () => {
                         <div>
                             <div>
                                 <label className="text-sm text-gray-600" htmlFor="category">Art</label>
-                                <Listbox value={category} onChange={setCategory}>
+                                <Listbox value={category} onChange={c => dispatch(updateQuestion({...question, type: c.key}))} >
                                     <div className="w-full relative">
                                         <Listbox.Button id="category" className="relative color transition ease-in-out duration-200 border border-gray-300  w-full py-2 md:py-3 pl-3 pr-10 text-left bg-white rounded-lg  cursor-default focus:outline-none focus:ring-2 focus:ring-blue-500 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 text-sm md:text-base">
                                             <span className="block truncate">{category.name}</span>
@@ -207,6 +219,15 @@ const QuestionnaireDashboard = () => {
                                         </div>
                                     </div> 
                                 </div>
+                                <TextInput value={conditionValue} label="Titel" onChange={v => setConditionValue(v)}/>
+                                <TextInput value={conditionValue} label="Wert" onChange={v => setConditionValue(v)}/>
+                                <div className="mt-5">
+                                    <button 
+                                        onClick={newCondition}
+                                        className="py-2 px-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right">
+                                        Option hinzufügen
+                                    </button>
+                                </div>
                             </>
                         }
                         <hr/>
@@ -239,10 +260,10 @@ const QuestionnaireDashboard = () => {
                                                                     {c.type}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-nowrap" title={c.value}>
-                                                                    {shorten(c.value, 14)}
+                                                                    {shorten(c.value, 16)}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                                    <button className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
+                                                                    <button onClick={removeCondition(c._id)} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                                                                         </svg>
@@ -315,11 +336,11 @@ const QuestionnaireDashboard = () => {
                                         <TextInput value={conditionValue} label="Wert" onChange={v => setConditionValue(v)}/>
                                     </div>
                                     <div className="mt-5">
-                                        <input 
+                                        <button 
                                             onClick={newCondition}
-                                            type="submit" 
-                                            className="py-2 px-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right"
-                                            value="Bedingung hinzufügen"/>
+                                            className="py-2 px-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right">
+                                            Bedingung hinzufügen
+                                        </button>
                                     </div>
                                 </div>
                                 <hr/>
@@ -446,7 +467,7 @@ const QuestionnaireDashboard = () => {
                                 Frage hinzufügen
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </aside>
             </div>
         </Shell>

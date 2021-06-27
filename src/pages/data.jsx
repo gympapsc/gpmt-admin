@@ -5,7 +5,7 @@ import Secure from "../components/secure"
 import Shell from "../components/shell"
 import { useForecastModels, useUsers } from "../hooks"
 import api from "../api/http"
-import { activateForecastModel, deleteForecastModel } from "../actions"
+import { activateForecastModel, deleteForecastModel, addForecastModel } from "../actions"
 
 const DataDashboard = () => {
     let uploadFileRef = useRef(null)

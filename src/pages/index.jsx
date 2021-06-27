@@ -8,7 +8,7 @@ const Dashboard = () => {
     return (
         <Secure>
             <Shell>
-                <div className="p-4 w-full grid grid-cols-1 grid-rows-auto xl:grid-cols-2 2xl:grid-cols-3 gap-3 xl:gap-4">
+                <div className="p-4 w-full grid grid-cols-1 grid-rows-auto 2xl:grid-cols-2 gap-3 xl:gap-4">
                     <div className="space-y-2">
                     <div className="w-full flex flex-row">
                             <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Nutzer</h4>
@@ -18,18 +18,18 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Aktive Nutzer</h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
+                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Aktive Nutzer</h3>
                             </div>
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Geschlecht</h3>
+                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Altersverteilung</h3>
+                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Altersverteilung</h3>
                             </div>
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">BMI-Verteilung</h3>
+                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">BMI-Verteilung</h3>
                             </div>
                         </div>
                     </div>
@@ -42,18 +42,18 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Geschlecht</h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Miktionsfrequenz</h3>
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Miktionsfrequenz</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Geschlecht</h3>
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Geschlecht</h3>
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
                         </div>
                     </div>
@@ -66,12 +66,12 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Genauigkeit</h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Genauigkeit</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Recall</h3>
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Recall</h3>
                             </div>
                         </div>
                     </div>
@@ -84,12 +84,12 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Genauigkeit</h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Genauigkeit</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Recall</h3>
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Recall</h3>
                             </div>
                         </div>
                     </div>
@@ -102,12 +102,12 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Vorerkrankungen</h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Vorerkrankungen</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
-                                <h3 className="text-sm font-medium">Recall</h3>
+                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Recall</h3>
                             </div>
                         </div>
                     </div>

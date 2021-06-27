@@ -42,6 +42,7 @@ export const authenticateAdmin = () => async (dispatch, getState, { api }) => {
 
 
 
+
 export const setAuthToken = bearer => ({
     type: "SET_AUTH_TOKEN",
     payload: {
@@ -177,6 +178,34 @@ export const addQuestion = (parent_id, q) => async (dispatch, getState, { api })
     })
 }
 
+export const deleteCondition = (question_id, condition_id) => async (dispatch, getState, { api }) => {
+    let { data: { ok }} = await api.deleteQuestionCondition(question_id, condition_id)
+
+    dispatch({
+        type: "DELETE_QUESTION_CONDITION",
+        payload: {
+            question_id,
+            condition_id
+        }
+    })
+}
+
+export const updateQuestion = question => async (dispatch, getState, { api }) => {
+    let { data: { ok, err }} = await api.updateQuestion(question._id, question)
+
+    if(ok) {
+        dispatch({
+            type: "UPDATE_QUESTION",
+            payload: {
+                question
+            }
+        })
+    }
+}
+
+
+
+
 export const deleteQuestion = _id => async (dispatch, getState, { api }) => {
     let { data: { ok, err}} = await api.deleteQuestion(_id)
 
@@ -189,8 +218,6 @@ export const deleteQuestion = _id => async (dispatch, getState, { api }) => {
         })
     }
 }
-
-
 
 export const addCondition = (question_id, c) => async (dispatch, getState, { api }) => {
     let { data: {ok, err}} = await api.addCondition(question_id, c)
@@ -205,7 +232,6 @@ export const addCondition = (question_id, c) => async (dispatch, getState, { api
         })
     }
 }
-
 
 export const addPhotoClassificationModel = model => ({
     type: "ADD_PHOTO_CLASSIFICATION_MODEL",

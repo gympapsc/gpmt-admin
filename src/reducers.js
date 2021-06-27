@@ -39,11 +39,31 @@ const reducer = (state=initialState, action) => {
                 ...state,
                 questionnaire: action.payload
             }
+        case "ADD_QUESTION":
+            return {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.parent_id),
+                    action.payload.question,
+                    {
+                        ...state.questionnaire.find(q => q._id === action.payload.parent_id),
+                        next: [
+                            ...state.questionnaire.find(q => q._id === action.payload.parent_id).next,
+                            action.payload.question
+                        ]
+                    }
+                ]
+            }
+        case "UPDATE_QUESTION":
+            return {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.question._id),
+                    action.payload.question
+                ]
+            }
         case "ADD_CONDITION":
-            console.log(state.questionnaire.find(q => q._id === action.payload.question_id).condition, [
-                ...state.questionnaire.find(q => q._id === action.payload.question_id).condition,
-                action.payload.condition
-            ], {
+            return {
                 ...state,
                 questionnaire: [
                     ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
@@ -55,17 +75,16 @@ const reducer = (state=initialState, action) => {
                         ]
                     }
                 ]
-            })
+            }
+        case "DELETE_QUESTION_CONDITION":
             return {
                 ...state,
                 questionnaire: [
                     ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
                     {
                         ...state.questionnaire.find(q => q._id === action.payload.question_id),
-                        condition: [
-                            ...state.questionnaire.find(q => q._id === action.payload.question_id).condition,
-                            action.payload.condition
-                        ]
+                        condition: state.questionnaire.find(q => q._id === action.payload.question_id)
+                            .condition.filter(c => c._id !== action.payload.condition_id)
                     }
                 ]
             }
@@ -86,6 +105,14 @@ const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 photoClassificationModels: state.photoClassificationModels.filter(m => m._id !== action.payload.id)
+            }
+        case "ADD_FORECAST_MODEL":
+            return {
+                ...state,
+                forecastModels: [
+                    ...state.forecastModels,
+                    action.payload
+                ]
             }
         case "DELETE_FORECAST_MODEL":
             return {

@@ -6,6 +6,7 @@ export const redirect = path => {
 
 export const ravelTree = questions => {
     let root = questions.filter(q => q.root)[0]
+    console.log("RAVEL TREE", questions)
     function ravelBranch(root) {
         if(root) {
             console.log(root)
