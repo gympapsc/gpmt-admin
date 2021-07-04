@@ -2,8 +2,16 @@ import React from "react"
 
 import Secure from "../components/secure"
 import Shell from "../components/shell"
+import { useUsers, useUserStats } from "../hooks"
+import Histogram from "../visualisations/histogram"
+import StepChart from "../visualisations/stepChart"
 
 const Dashboard = () => {
+
+    let { registrations } = useUserStats()
+    let users = useUsers()
+
+    let now = new Date()
 
     return (
         <Secure>
@@ -19,17 +27,29 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Aktive Nutzer</h3>
+                            <div className="col-span-1 border border-gray-300 text-black rounded-md bg-white flex flex-col p-3">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Registrierungen</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <StepChart data={registrations}></StepChart>
+                                </div>
                             </div>
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <Histogram data={users.map(u => Math.floor(now.valueOf() - u.birthDate.valueOf()) / (365 * 24 * 3600 * 1000))}></Histogram>
+                                </div>
                             </div>
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Altersverteilung</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <Histogram data={users.map(u => Math.floor(now.valueOf() - u.birthDate.valueOf()) / (365 * 24 * 3600 * 1000))}></Histogram>
+                                </div>
                             </div>
-                            <div className="col-span-1 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">BMI-Verteilung</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <Histogram data={users.map(u => Math.round(u.weight / (u.height / 100)))}></Histogram>
+                                </div>
                             </div>
                         </div>
                     </div>

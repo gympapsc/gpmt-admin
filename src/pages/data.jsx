@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import Secure from "../components/secure"
@@ -7,7 +7,10 @@ import { useForecastModels, useUsers } from "../hooks"
 import api from "../api/http"
 import { activateForecastModel, deleteForecastModel, addForecastModel } from "../actions"
 
+const itemCount = 15
+
 const DataDashboard = () => {
+    let [page, setPage] = useState(1)
     let uploadFileRef = useRef(null)
     let forecastModels = useForecastModels()
         .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf())
@@ -52,6 +55,32 @@ const DataDashboard = () => {
                                 <input type="submit" />
                             </form>
                         </button>
+                    </div>
+                    <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
+                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                                <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Täglich aktive Nutzer</h3>
+                            </div>
+                            <div className="mt-auto p-3">
+                                <span className="text-2xl md:text-3xl font-bold">10<span className="text-base font-medium text-gray-700"> Nutzer</span></span>
+                            </div>
+                        </div>
+                        <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
+                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                                <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monatlich aktive Nutzer</h3>
+                            </div>
+                            <div className="mt-auto p-3">
+                                <span className="text-2xl md:text-3xl font-bold">62</span><span className="text-base font-medium text-gray-700"> Nutzer</span>
+                            </div>
+                        </div>
+                        <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
+                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                                <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Einträge</h3>
+                            </div>
+                            <div className="mt-auto p-3">
+                                <span className="text-2xl md:text-3xl font-bold">879</span><span className="text-base"> Einträge</span>
+                            </div>
+                        </div>
                     </div>
                     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="col-span-full h-52 text-black rounded-md bg-white flex flex-col"></div>
@@ -125,7 +154,6 @@ const DataDashboard = () => {
                         </div>
                     </div>
                 </div>
-                
                 <div className="space-y-3">
                     <div className="w-full flex flex-row justify-between items-center">
                         <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Daten</h4>
@@ -161,7 +189,7 @@ const DataDashboard = () => {
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {users.map(user => 
+                                            {users.slice((page - 1) *itemCount, page * itemCount).map(user => 
                                                 <tr key={user._id}>
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         {user._id}
@@ -189,6 +217,23 @@ const DataDashboard = () => {
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-row justify-around">
+                        <div>
+                            <button disabled={page === 1} className="p-2 rounded-md hover:bg-blue-200 text-blue-700 transition-colors duration-150" onClick={() => setPage(page - 1)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                            </button>
+                            <div className="font-medium rounded-full w-10 h-10 align-bottom mx-4 bg-gray-300 inline-flex flex-col justify-center items-center">
+                                <span>{page}</span>
+                            </div>
+                            <button className="p-2 rounded-md hover:bg-blue-200 text-blue-700 transition-colors duration-150" onClick={() => setPage(page + 1)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>

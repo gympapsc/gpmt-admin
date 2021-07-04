@@ -6,7 +6,8 @@ import {
     loadPhotoClassificationModels,
     loadPhotos,
     loadUsers,
-    loadQuestionnaire
+    loadQuestionnaire,
+    loadRegistrations
 } from "./actions"
 
 
@@ -76,6 +77,21 @@ export function usePhotos(label) {
     })
 
     return photos || []
+}
+
+export function useUserStats() {
+    let registrations = useSelector(s => s.registrations)
+    let dispatch = useDispatch()
+
+    useEffect(() => {
+        if(typeof window !== "undefined" && (registrations === null)) {
+            dispatch(loadRegistrations())
+        }
+    })
+
+    return {
+        registrations: registrations || []
+    }
 }
 
 export function useQuestionnaire() {

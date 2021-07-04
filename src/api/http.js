@@ -17,6 +17,7 @@ const api = {
     getForecastModels: () => client.get("/admin/data/model"),
     getPhotoClassificationModels: () => client.get("/admin/photo/model"),
     getQuestionnaire: () => client.get("/admin/questionnaire"),
+    getRegistrations: () => client.get("/admin/stats/user"),
     
     activateForecastModel: id => client.post(`/admin/data/model/${id}/activate`),
     activatePhotoModel: id => client.post(`/admin/photo/model/${id}/activate`),

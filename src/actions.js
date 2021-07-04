@@ -10,7 +10,6 @@ export const signInAdmin = password => async (dispatch, getState, { api }) => {
                 type: "SIGNIN_FAILED"
             })
         } else if(ok) {
-            debugger
             redirect("/")
         } else {
             console.warn("Sign in failed")
@@ -93,8 +92,15 @@ export const loadPhotos = label => async (dispatch, getState, { api }) => {
 export const loadUsers = () => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
         let { data: { err, users } } = await api.getUsers()
+
         console.log("GET USERS ", users, err)
-        dispatch(setUsers(users))
+        if(users) {
+            users = users.map(u => ({
+                ...u,
+                birthDate: new Date(u.birthDate)
+            }))
+            dispatch(setUsers(users))
+        }
     }
 }
 
@@ -116,6 +122,25 @@ export const loadQuestionnaire = () => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
         let { data: { questionnaire }} = await api.getQuestionnaire()
         dispatch(setQuestionnaire(questionnaire))
+    }
+}
+
+export const loadRegistrations = () => async (dispatch, getState, { api }) => {
+    if(typeof window !== "undefined") {
+        let { data: { registrations }} = await api.getRegistrations()
+
+        registrations = registrations.map(r => ({
+            ...r,
+            date: new Date(r.date)
+        }))
+            .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+
+        dispatch({
+            type: "SET_REGISTRATIONS",
+            payload: {
+                registrations
+            }
+        })
     }
 }
 

@@ -4,7 +4,8 @@ const initialState = {
     users: null,
     forecastModels: null,
     photoClassificationModels: null,
-    questionnaire: null
+    questionnaire: null,
+    registrations: null
 }
 
 const reducer = (state=initialState, action) => {
@@ -38,6 +39,11 @@ const reducer = (state=initialState, action) => {
             return {
                 ...state,
                 questionnaire: action.payload
+            }
+        case "SET_REGISTRATIONS":
+            return {
+                ...state,
+                registrations: action.payload.registrations
             }
         case "ADD_QUESTION":
             return {

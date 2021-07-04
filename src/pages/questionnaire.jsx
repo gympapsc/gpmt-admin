@@ -89,7 +89,10 @@ const QuestionnaireDashboard = () => {
     return (
         <Shell>
             <div className="grid grid-cols-2 xl:grid-cols-3 w-full h-full">
-                <main className="bg-gray-300 xl:col-span-2">
+                <main style={{
+                    backgroundSize: "20px 20px",
+                    backgroundImage: "radial-gradient(circle, #aaa 1px, rgba(180, 180, 180, 0) 1px)"
+                }} className="bg-gray-200 xl:col-span-2">
                     <QuestionnaireTree data={ravelTree(questionnaire)} selectNode={q => setQuestionId(q._id)} active={question._id}/>
                 </main>
                 <aside className="bg-gray-100 border-l border-gray-300 p-3 xl:p-5 2xl:p-8">
