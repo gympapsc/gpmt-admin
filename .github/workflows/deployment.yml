@@ -10,6 +10,7 @@ on:
 
 env:
   NODE_VERSION: "14.x"
+  NEXT_PUBLIC_API_URL: "https://api-gpmt.westeurope.cloudapp.azure.com"
 
 jobs:
   testing:
