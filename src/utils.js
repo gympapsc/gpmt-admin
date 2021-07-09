@@ -18,8 +18,10 @@ export const ravelTree = questions => {
                     }
                     root.next[i] = next
                 }
+
                 if(root.next[i]) {
-                    root.next[i] = ravelBranch(root.next[i])
+                    next = questions.filter(q => q._id === root.next[i]._id)[0]
+                    root.next[i] = ravelBranch(next)
                 }
             }
             return root

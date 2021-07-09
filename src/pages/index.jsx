@@ -63,16 +63,19 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Miktionsfrequenz</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <Histogram data={users.map(u => u.micturitionFrequency)}></Histogram>
+                                </div>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
-                            <div className="col-span-1 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
+                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-md bg-white flex flex-col p-3 h-72">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                             </div>
                         </div>

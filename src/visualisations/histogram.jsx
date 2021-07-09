@@ -29,7 +29,6 @@ const Histogram = ({data, xlabel, ylabel}) => {
             .value(d => d)
             .domain(x.domain())
             .thresholds(x.ticks(d3.max(data)))
-
             
         let bins = histogram(data)
             
@@ -46,7 +45,7 @@ const Histogram = ({data, xlabel, ylabel}) => {
             .select(".domain").remove()
 
         let y = d3.scaleLinear()
-            .domain([0, 100])
+            .domain([0, 1])
             .range([ height, 0])
             .nice()
 
@@ -62,9 +61,9 @@ const Histogram = ({data, xlabel, ylabel}) => {
             .enter()
             .append("rect")
               .attr("x", 1)
-              .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+              .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length / data.length) + ")"; })
               .attr("width", function(d) { return x(d.x1) - x(d.x0) - 1 ; })
-              .attr("height", function(d) { return height - y(d.length); })
+              .attr("height", function(d) { return height - y(d.length / data.length); })
               .style("fill", "green")
         
         return () => {

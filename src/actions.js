@@ -230,7 +230,6 @@ export const updateQuestion = question => async (dispatch, getState, { api }) =>
 
 
 
-
 export const deleteQuestion = _id => async (dispatch, getState, { api }) => {
     let { data: { ok, err}} = await api.deleteQuestion(_id)
 
@@ -253,6 +252,20 @@ export const addCondition = (question_id, c) => async (dispatch, getState, { api
             payload: {
                 question_id,
                 condition: c
+            }
+        })
+    }
+}
+
+export const addOption = (question_id, option) => async (dispatch, getState, { api }) => {
+    let { data: {ok, err} } = await api.addOption(question_id, option)
+
+    if(ok) {
+        dispatch({
+            type: "ADD_OPTION",
+            payload: {
+                question_id,
+                option
             }
         })
     }

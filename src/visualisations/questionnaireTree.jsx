@@ -4,9 +4,6 @@ import * as d3 from "d3"
 const QuestionnaireTree = ({data, selectNode, active}) => {
 
     let container = useRef(null)
-
-    console.log("NEW DATA", data)
-
     const clickedNode = (e, data) => {
         console.log(data)
         active = data.data._id

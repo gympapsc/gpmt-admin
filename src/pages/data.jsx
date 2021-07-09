@@ -3,9 +3,10 @@ import { useDispatch } from "react-redux"
 
 import Secure from "../components/secure"
 import Shell from "../components/shell"
-import { useForecastModels, useUsers } from "../hooks"
+import { useForecastModels, useUsers, useUserStats } from "../hooks"
 import api from "../api/http"
 import { activateForecastModel, deleteForecastModel, addForecastModel } from "../actions"
+import StepChart from "../visualisations/stepChart"
 
 const itemCount = 15
 
@@ -35,6 +36,8 @@ const DataDashboard = () => {
             })
             .catch(err => dispatch({ type: "UPLOAD_ERROR" }))
     }
+
+    let { registrations } = useUserStats()
 
     return (
         <Shell>
@@ -83,10 +86,12 @@ const DataDashboard = () => {
                         </div>
                     </div>
                     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div className="col-span-full h-52 text-black rounded-md bg-white flex flex-col"></div>
+                        <div className="col-span-full h-72 text-black rounded-md bg-white flex flex-col py-6 px-4">
+                            <StepChart data={registrations}></StepChart>
+                        </div>
                         <div className="col-span-full text-black rounded-md bg-white flex flex-col">
-                            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div className="-my-2 overflow-x-auto">
+                                <div className="py-2 align-middle inline-block min-w-full">
                                     <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                         <table className="min-w-full divide-y divide-gray-200">
                                             <thead className="bg-gray-50">
@@ -117,8 +122,8 @@ const DataDashboard = () => {
                                                             </div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                            <div className="text-sm text-gray-900">{new Date(m.timestamp).toLocaleTimeString()}</div>
-                                                            <div className="text-sm text-gray-500">13:35</div>
+                                                            <div className="text-sm text-gray-900">{new Date(m.timestamp).toLocaleDateString()}</div>
+                                                            <div className="text-sm text-gray-500">{new Date(m.timestamp).toLocaleTimeString()}</div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             {
@@ -162,8 +167,8 @@ const DataDashboard = () => {
                         </a>
                     </div>
                     <div className="flex flex-col">
-                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <div className="-my-2 overflow-x-auto">
+                            <div className="py-2 align-middle inline-block min-w-full">
                                 <div className="overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                     <table className="min-w-full divide-y divide-gray-200">
                                         <thead className="bg-gray-50">

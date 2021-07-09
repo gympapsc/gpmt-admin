@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState, useMemo } from "react"
 import Link from "next/link"
 import { Listbox, Switch, Transition } from "@headlessui/react"
 import { SelectorIcon, CheckIcon } from "@heroicons/react/solid"
@@ -16,14 +16,15 @@ import {
     addQuestion, 
     deleteCondition, 
     deleteQuestion,
-    updateQuestion
+    updateQuestion,
+    addOption
 } from "../actions"
 
 const categories = {
     number: { id: 1, name: "Ziffern", key: "number" },
     radio: { id: 2, name: "Auswahl", key: "radio" },
     string: {id: 3, name: "Zeichenkette", key: "string" },
-    bool: { id: 4, name: "Bool'sche Auswahl", key: "book" }
+    bool: { id: 4, name: "Bool'sche Auswahl", key: "bool" }
 }
 
 const conditionTypes = [
@@ -37,6 +38,9 @@ const conditionTypes = [
 const QuestionnaireDashboard = () => {
     let dispatch = useDispatch()
     let questionnaire = useQuestionnaire()
+
+    let [title, setRadioTitle] = useState("")
+    let [radioValue, setRadioValue] = useState("")
 
     let [type, setType] = useState(conditionTypes[0])
     let [conditionValue, setConditionValue] = useState("")
@@ -53,6 +57,17 @@ const QuestionnaireDashboard = () => {
             type,
             value: conditionValue
         }))
+    }
+
+    let newOption = e => {
+        e.preventDefault()
+        e.stopPropagation()
+        dispatch(addOption(question._id, {
+            title,
+            value : radioValue
+        }))
+        setRadioTitle("")
+        setRadioValue("")
     }
 
     let removeCondition = id => e => {
@@ -86,6 +101,8 @@ const QuestionnaireDashboard = () => {
         setQuestionId(questionnaire.find(q => q.root)?._id)
     }, [questionnaire])
 
+    let tree = useMemo(() => ravelTree(questionnaire), [questionnaire])
+
     return (
         <Shell>
             <div className="grid grid-cols-2 xl:grid-cols-3 w-full h-full">
@@ -93,9 +110,9 @@ const QuestionnaireDashboard = () => {
                     backgroundSize: "20px 20px",
                     backgroundImage: "radial-gradient(circle, #aaa 1px, rgba(180, 180, 180, 0) 1px)"
                 }} className="bg-gray-200 xl:col-span-2">
-                    <QuestionnaireTree data={ravelTree(questionnaire)} selectNode={q => setQuestionId(q._id)} active={question._id}/>
+                    <QuestionnaireTree data={tree} selectNode={q => setQuestionId(q._id)} active={question._id}/>
                 </main>
-                <aside className="bg-gray-100 border-l border-gray-300 p-3 xl:p-5 2xl:p-8">
+                <aside className="bg-gray-100 border-l border-gray-300 p-3 xl:p-5 2xl:p-8 overflow-y-scroll pb-10">
                     <div className="flex flex-col h-full space-y-4">
                         <div className="flex flex-row justify-between items-center">
                             <div className="mb-1">
@@ -121,7 +138,7 @@ const QuestionnaireDashboard = () => {
                         </div>
                         <div>
                             <div>
-                                <label className="text-sm text-gray-600" htmlFor="category">Art</label>
+                                <label className="text-xs uppercase text-gray-600 tracking-wide" htmlFor="category">Art</label>
                                 <Listbox value={category} onChange={c => dispatch(updateQuestion({...question, type: c.key}))} >
                                     <div className="w-full relative">
                                         <Listbox.Button id="category" className="relative color transition ease-in-out duration-200 border border-gray-300  w-full py-2 md:py-3 pl-3 pr-10 text-left bg-white rounded-lg  cursor-default focus:outline-none focus:ring-2 focus:ring-blue-500 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 text-sm md:text-base">
@@ -187,14 +204,17 @@ const QuestionnaireDashboard = () => {
                                 <hr/>
                                 <div>
                                     <h2 className="text-lg font-semibold mb-1">Auswahl</h2>
-                                    <div className="mb-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                    <div className="mb-2 overflow-x-auto">
+                                        <div className="py-2 align-middle inline-block min-w-full">
                                             <div className="border overflow-hidden border-gray-200 sm:rounded-lg">
                                                 <table className="min-w-full divide-y divide-gray-200">
                                                     <thead className="bg-gray-50">
                                                         <tr>
                                                             <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                                Option
+                                                                Titel
+                                                            </th>
+                                                            <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                Wert
                                                             </th>
                                                             <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                                 <span className="sr-only"></span>
@@ -202,10 +222,13 @@ const QuestionnaireDashboard = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="bg-white divide-y divide-gray-200">
-                                                        {Object.keys(question.condition).map((k, i) => (
+                                                        {question.options.map((k, i) => (
                                                             <tr key={i}>
                                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                                    {k}
+                                                                    {k.title}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                                    {k.value}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                                     <Link href={`/app`}>
@@ -222,11 +245,11 @@ const QuestionnaireDashboard = () => {
                                         </div>
                                     </div> 
                                 </div>
-                                <TextInput value={conditionValue} label="Titel" onChange={v => setConditionValue(v)}/>
-                                <TextInput value={conditionValue} label="Wert" onChange={v => setConditionValue(v)}/>
+                                <TextInput value={title} label="Titel" onChange={v => setRadioTitle(v)}/>
+                                <TextInput value={radioValue} label="Wert" onChange={v => setRadioValue(v)}/>
                                 <div className="mt-5">
                                     <button 
-                                        onClick={newCondition}
+                                        onClick={newOption}
                                         className="py-2 px-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right">
                                         Option hinzufügen
                                     </button>
@@ -239,8 +262,8 @@ const QuestionnaireDashboard = () => {
                             <>
                                 <div>
                                     <h2 className="text-lg font-semibold mb-1">Bedingungen</h2>
-                                    <div className="mb-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                    <div className="mb-2 overflow-x-auto">
+                                        <div className="py-2 align-middle inline-block min-w-full">
                                             <div className="border overflow-hidden border-gray-200 sm:rounded-lg">
                                                 <table className="min-w-full divide-y divide-gray-200">
                                                     <thead className="bg-gray-50">
@@ -280,7 +303,7 @@ const QuestionnaireDashboard = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-sm text-gray-600" htmlFor="type">Bedingung</label>
+                                        <label className="text-xs uppercase tracking-wide text-gray-600" htmlFor="type">Bedingung</label>
                                         <Listbox value={type} onChange={setType}>
                                             <div className="w-full relative">
                                                 <Listbox.Button id="type" className="relative color transition ease-in-out duration-200 border border-gray-300  w-full py-2 md:py-3 pl-3 pr-10 text-left bg-white rounded-lg  cursor-default focus:outline-none focus:ring-2 focus:ring-blue-500 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 text-sm md:text-base">
@@ -351,9 +374,8 @@ const QuestionnaireDashboard = () => {
                         }
                         <div>
                             <label className="text-lg font-semibold mb-1" htmlFor="category">Folgefragen</label>
-                            <div className="rounded-md bg-white h-52 border border-gray-300 my-3"></div>
-                            <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div className="my-2 overflow-x-auto">
+                                <div className="py-2 align-middle inline-block min-w-full">
                                     <div className="border overflow-hidden border-gray-200 sm:rounded-lg">
                                         <table className="min-w-full divide-y divide-gray-200">
                                             <thead className="bg-gray-50">
@@ -400,7 +422,7 @@ const QuestionnaireDashboard = () => {
                             
                         </div>
                         <div>
-                            <label className="text-sm text-gray-600" htmlFor="category">Art</label>
+                            <label className="text-xs text-gray-600 uppercase" htmlFor="category">Art</label>
                             <Listbox value={newType} onChange={type => setNewType(type)}>
                                 <div className="w-full relative">
                                     <Listbox.Button id="category" className="relative color transition ease-in-out duration-200 border border-gray-300  w-full py-2 md:py-3 pl-3 pr-10 text-left bg-white rounded-lg  cursor-default focus:outline-none focus:ring-2 focus:ring-blue-500 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 text-sm md:text-base">

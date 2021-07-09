@@ -5,7 +5,7 @@ import api from "./api/http"
 
 
 const logger = store => next => action => {
-    console.log(action.type)
+    console.log(action.type, action.payload)
     next(action)
 }
 

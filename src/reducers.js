@@ -60,6 +60,11 @@ const reducer = (state=initialState, action) => {
                     }
                 ]
             }
+        case "DELETE_QUESTION":
+            return {
+                ...state,
+                questionnaire: state.questionnaire.filter(q => q._id !== action.payload._id)
+            }
         case "UPDATE_QUESTION":
             return {
                 ...state,
@@ -91,6 +96,20 @@ const reducer = (state=initialState, action) => {
                         ...state.questionnaire.find(q => q._id === action.payload.question_id),
                         condition: state.questionnaire.find(q => q._id === action.payload.question_id)
                             .condition.filter(c => c._id !== action.payload.condition_id)
+                    }
+                ]
+            }
+        case "ADD_OPTION":
+            return {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
+                    {
+                        ...state.questionnaire.find(q => q._id === action.payload.question_id),
+                        options: [
+                            ...state.questionnaire.find(q => q._id === action.payload.question_id).options,
+                            action.payload.option
+                        ]
                     }
                 ]
             }
