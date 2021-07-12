@@ -1,6 +1,6 @@
 name: Deploy to Azure Static Web Apps
 
-on: [ release, push ]
+on: [ release ]
 
 env:
   NODE_VERSION: "15.x"
@@ -53,13 +53,13 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/gpmt-admin:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/gpmt-admin:${{ github.sha }}
+          docker build . -t ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/gpmt-admin:${{ github.event.release.tag_name }}
+          docker push ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/gpmt-admin:${{ github.event.release.tag_name }}
 
       - uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          images: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/gpmt-admin:${{ github.sha }}
+          images: ${{ secrets.REGISTRY_USERNAME }}.azurecr.io/gpmt-admin:${{ github.event.release.tag_name }}
       
       - name: logout
         run: az logout

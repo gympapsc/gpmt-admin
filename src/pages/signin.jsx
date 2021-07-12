@@ -27,7 +27,7 @@ const Signin = () => {
                             />
                         <span className="text-sm text-red-600">{errors.password?.message}&nbsp;</span>
                     </div>
-                    <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-lg w-full focus:ring-2 focus:ring-offset-1 focus:ring-blue-600 focus:outline-none">
+                    <button className="bg-blue-600 hover:bg-blue-500 text-white p-2 font-medium rounded-lg w-full focus:ring-2 focus:ring-offset-1 focus:ring-blue-600 focus:outline-none">
                         Anmelden
                     </button> 
                 </form>
