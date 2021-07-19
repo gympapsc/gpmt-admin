@@ -34,7 +34,7 @@ export const ravelTree = questions => {
 
 
 export const shorten = (text, max) => {
-    if(text.length > max) {
+    if(text && text?.length > max) {
         return text.substring(0, max - 3) + "..."
     }
     return text

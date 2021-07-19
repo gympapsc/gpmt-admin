@@ -17,7 +17,8 @@ import {
     deleteCondition, 
     deleteQuestion,
     updateQuestion,
-    addOption
+    addOption,
+    deleteOption
 } from "../actions"
 
 const categories = {
@@ -70,6 +71,13 @@ const QuestionnaireDashboard = () => {
         setRadioValue("")
     }
 
+    let removeOption = id => e => {
+        e.preventDefault()
+        e.stopPropagation()
+        debugger;
+        dispatch(deleteOption(question._id, id))
+    }
+
     let removeCondition = id => e => {
         e.preventDefault()
         e.stopPropagation()
@@ -103,6 +111,8 @@ const QuestionnaireDashboard = () => {
 
     let tree = useMemo(() => ravelTree(questionnaire), [questionnaire])
 
+    console.log(question.condition)
+
     return (
         <Shell>
             <div className="grid grid-cols-2 xl:grid-cols-3 w-full h-full">
@@ -116,7 +126,7 @@ const QuestionnaireDashboard = () => {
                     <div className="flex flex-col h-full space-y-4">
                         <div className="flex flex-row justify-between items-center">
                             <div className="mb-1">
-                                <h2 className="text-2xl font-semibold">{question?.name}</h2>
+                                <h2 className="text-2xl font-semibold" title={question?.name}>{shorten(question?.name, 20)}</h2>
                                 <span className="text-sm text-gray-500">{question?._id}</span>
                             </div>
                             {
@@ -231,11 +241,9 @@ const QuestionnaireDashboard = () => {
                                                                     {k.value}
                                                                 </td>
                                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                                    <Link href={`/app`}>
-                                                                        <a className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
-                                                                            Löschen
-                                                                        </a>
-                                                                    </Link>
+                                                                    <button onClick={removeOption(k._id)} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
+                                                                        Löschen
+                                                                    </button>
                                                                 </td>
                                                             </tr>
                                                         ))}

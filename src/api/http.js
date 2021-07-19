@@ -45,6 +45,7 @@ const api = {
 
     deleteQuestionCondition: (id, condition_id) => client.delete(`/admin/questionnaire/${id}/condition/${condition_id}`),
     deleteQuestion: _id => client.delete(`/admin/questionnaire/${_id}`),
+    deleteQuestionOption: (id, option_id) => client.delete(`/admin/questionnaire/${id}/option/${option_id}`),
 
     updateQuestion: (_id, question) => client.put(`/admin/questionnaire/${_id}`, { question })
 }

@@ -15,7 +15,11 @@ RUN npm install
 FROM node:alpine AS builder
 WORKDIR /app
 
-ENV NEXT_PUBLIC_API_URL "https://api-gpmt.westeurope.cloudapp.azure.com"
+ARG ADMIN_VERSION="0.0.0"
+ARG API_URL="https://api.gympapmt.de"
+
+ENV NEXT_PUBLIC_API_URL ${API_URL}
+ENV NEXT_PUBLIC_ADMIN_VERSION ${ADMIN_VERSION}
 
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules

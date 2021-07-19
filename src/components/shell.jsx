@@ -1,9 +1,10 @@
 import React, { Fragment } from "react"
 import { useDispatch } from "react-redux"
 import Link from "next/link"
+import Image from "next/image"
 
 import { Menu, Transition } from "@headlessui/react"
-import { ChevronDownIcon, AcademicCapIcon, LogoutIcon, EditActiveIcon, EditIcon, EditInactiveIcon, DuplicateActiveIcon, DuplicateInactiveIcon, ArchiveActiveIcon, ArchiveInactiveIcon, MoveActiveIcon, MoveInactiveIcon, DeleteActiveIcon, DeleteInactiveIcon} from '@heroicons/react/solid'
+import { LogoutIcon } from '@heroicons/react/solid'
 import { signOutAdmin } from "../actions"
 
 
@@ -16,10 +17,15 @@ const Shell = ({children}) => {
 
     return (
         <div className="flex flex-col absolute top-0 bottom-0 w-full bg-gray-200">
-            <header className="flex-grow-0 w-full h-12 bg-gray-100 border-b border-gray-300 flex flex-row px-4">
-                <h1 className="text-2xl font-bold mr-auto self-center">
-                    GPMT
-                </h1>
+            <header className="flex-grow-0 w-full h-12 bg-gray-100 border-b border-gray-300 flex flex-row justify-between px-4">
+                <div className="self-center flex flex-row items-center justify-between">
+                    <div className="inline-block w-7 h-7">
+                        <Image src="/img/gympap.png" width="500" height="500" />
+                    </div>
+                    <h1 className="inline-block text-2xl font-bold ml-2">
+                        GPMT
+                    </h1>
+                </div>
                 <Menu className="relative inline-block text-left" as="div">
                     <Menu.Button className="flex justify-center items-center transform scale-110 my-2 text-gray-700 hover:text-gray-900">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,8 +68,6 @@ const Shell = ({children}) => {
                         </Menu.Items>
                     </Transition>
                 </Menu>
-                <a href="/admin-account" >
-                </a>
             </header>
             <main className="flex-grow flex flex-row w-full overflow-hidden">
                 <aside className="py-4 w-14 flex-grow-0 flex flex-col bg-gray-100 border-r border-gray-300 text-gray-700">

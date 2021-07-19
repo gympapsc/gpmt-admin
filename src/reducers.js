@@ -63,7 +63,15 @@ const reducer = (state=initialState, action) => {
         case "DELETE_QUESTION":
             return {
                 ...state,
-                questionnaire: state.questionnaire.filter(q => q._id !== action.payload._id)
+                questionnaire: [
+                    ...state.questionnaire.filter(q => !(q._id === action.payload._id || q._id === action.payload.parent_id)),
+                    {
+                        ...state.questionnaire.find(q => q._id === action.payload.parent_id),
+                        next: state.questionnaire
+                            .find(q => q._id === action.payload.parent_id).next
+                            .filter(r => r._id !== action.payload._id)
+                    }
+                ]
             }
         case "UPDATE_QUESTION":
             return {
@@ -73,18 +81,12 @@ const reducer = (state=initialState, action) => {
                     action.payload.question
                 ]
             }
-        case "ADD_CONDITION":
+        case "ADD_QUESTION_CONDITION":
             return {
                 ...state,
                 questionnaire: [
                     ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
-                    {
-                        ...state.questionnaire.find(q => q._id === action.payload.question_id),
-                        condition: [
-                            ...state.questionnaire.find(q => q._id === action.payload.question_id).condition,
-                            action.payload.condition
-                        ]
-                    }
+                    action.payload.question
                 ]
             }
         case "DELETE_QUESTION_CONDITION":
@@ -94,22 +96,30 @@ const reducer = (state=initialState, action) => {
                     ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
                     {
                         ...state.questionnaire.find(q => q._id === action.payload.question_id),
-                        condition: state.questionnaire.find(q => q._id === action.payload.question_id)
-                            .condition.filter(c => c._id !== action.payload.condition_id)
+                        condition: state.questionnaire
+                            .find(q => q._id === action.payload.question_id).condition
+                                .filter(c => c._id !== action.payload.condition_id)
                     }
                 ]
             }
-        case "ADD_OPTION":
+        case "ADD_QUESTION_OPTION":
+            return {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
+                    action.payload.question
+                ]
+            }
+        case "DELETE_QUESTION_OPTION":
             return {
                 ...state,
                 questionnaire: [
                     ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
                     {
                         ...state.questionnaire.find(q => q._id === action.payload.question_id),
-                        options: [
-                            ...state.questionnaire.find(q => q._id === action.payload.question_id).options,
-                            action.payload.option
-                        ]
+                        options: state.questionnaire
+                            .find(q => q._id === action.payload.question_id).options
+                                .filter(c => c._id !== action.payload.option_id)
                     }
                 ]
             }

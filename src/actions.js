@@ -120,7 +120,7 @@ export const loadPhotoClassificationModels = () => async (dispatch, getState, { 
 
 export const loadQuestionnaire = () => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
-        let { data: { questionnaire }} = await api.getQuestionnaire()
+        let { data: { questionnaire } } = await api.getQuestionnaire()
         dispatch(setQuestionnaire(questionnaire))
     }
 }
@@ -231,41 +231,61 @@ export const updateQuestion = question => async (dispatch, getState, { api }) =>
 
 
 export const deleteQuestion = _id => async (dispatch, getState, { api }) => {
-    let { data: { ok, err}} = await api.deleteQuestion(_id)
+    let { data: { ok, err }} = await api.deleteQuestion(_id)
+
+    let questionnaire = getState().questionnaire
+    let parent = questionnaire.find(q => {
+        return q.next.find(r => r._id === _id)
+    })
 
     if(ok) {
         dispatch({
             type: "DELETE_QUESTION",
             payload: {
-                _id
+                _id,
+                parent_id: parent._id
             }
         })
     }
 }
 
 export const addCondition = (question_id, c) => async (dispatch, getState, { api }) => {
-    let { data: {ok, err}} = await api.addCondition(question_id, c)
+    let { data: {ok, question}} = await api.addCondition(question_id, c)
 
     if(ok) {
         dispatch({
-            type: "ADD_CONDITION",
+            type: "ADD_QUESTION_CONDITION",
             payload: {
                 question_id,
-                condition: c
+                question
             }
         })
     }
 }
 
 export const addOption = (question_id, option) => async (dispatch, getState, { api }) => {
-    let { data: {ok, err} } = await api.addOption(question_id, option)
+    let { data: {ok, err, question} } = await api.addOption(question_id, option)
 
     if(ok) {
         dispatch({
-            type: "ADD_OPTION",
+            type: "ADD_QUESTION_OPTION",
             payload: {
                 question_id,
-                option
+                question
+            }
+        })
+    }
+}
+
+export const deleteOption = (question_id, id) => async (dispatch, getState, { api }) => {
+    let { data: { ok, err }} = await api.deleteQuestionOption(question_id, id)
+    
+    if(ok) {
+        dispatch({
+            type: "DELETE_QUESTION_OPTION",
+            payload: {
+                question_id,
+                option_id: id
             }
         })
     }
