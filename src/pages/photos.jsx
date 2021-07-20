@@ -46,7 +46,10 @@ const PhotoDashboard = () => {
                     <div className="w-full flex flex-row justify-between items-center">
                         <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Modelle</h4>
                         <button onClick={e => uploadFileRef.current.click()} className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
-                            Upload
+                            <svg xmlns="http://www.w3.org/2000/svg" className="inline mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Hochladen
 
                             <form hidden>
                                 <input
@@ -61,7 +64,7 @@ const PhotoDashboard = () => {
                     </div>
                     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
-                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                            <div className="w-full bg-gray-100 px-3 py-2  rounded-t-md">
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hochgeladene Bilder</h3>
                             </div>
                             <div className="mt-auto p-3">
@@ -69,7 +72,7 @@ const PhotoDashboard = () => {
                             </div>
                         </div>
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
-                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                            <div className="w-full bg-gray-100 px-3 py-2  rounded-t-md">
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hochgeladene Bilder</h3>
                             </div>
                             <div className="mt-auto p-3">
@@ -77,7 +80,7 @@ const PhotoDashboard = () => {
                             </div>
                         </div>
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
-                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                            <div className="w-full bg-gray-100 px-3 py-2  rounded-t-md">
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hochgeladene Bilder</h3>
                             </div>
                             <div className="mt-auto p-3">

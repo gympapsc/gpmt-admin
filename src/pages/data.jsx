@@ -45,8 +45,11 @@ const DataDashboard = () => {
                 <div className="space-y-3">
                     <div className="w-full flex flex-row justify-between items-center">
                         <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Modelle</h4>
-                        <button onClick={e => uploadFileRef.current.click()} className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
-                            Upload
+                        <button onClick={e => uploadFileRef.current.click()} aria-label="Modell hochladen" title="Modell hochladen" className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="inline mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Hochladen
 
                             <form hidden>
                                 <input
@@ -61,7 +64,7 @@ const DataDashboard = () => {
                     </div>
                     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
-                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                            <div className="w-full bg-gray-100 px-3 py-2  rounded-t-md">
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Täglich aktive Nutzer</h3>
                             </div>
                             <div className="mt-auto p-3">
@@ -69,7 +72,7 @@ const DataDashboard = () => {
                             </div>
                         </div>
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
-                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                            <div className="w-full bg-gray-100 px-3 py-2  rounded-t-md">
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monatlich aktive Nutzer</h3>
                             </div>
                             <div className="mt-auto p-3">
@@ -77,7 +80,7 @@ const DataDashboard = () => {
                             </div>
                         </div>
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
-                            <div className="w-full bg-gray-100 px-3 py-3  rounded-t-md">
+                            <div className="w-full bg-gray-100 px-3 py-2  rounded-t-md">
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Einträge</h3>
                             </div>
                             <div className="mt-auto p-3">
@@ -162,8 +165,11 @@ const DataDashboard = () => {
                 <div className="space-y-3">
                     <div className="w-full flex flex-row justify-between items-center">
                         <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Daten</h4>
-                        <a href={`${process.env.NEXT_PUBLIC_API_URL}/admin/data/download`} className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
-                            Download
+                        <a href={`${process.env.NEXT_PUBLIC_API_URL}/admin/data/export/csv`} className="ml-2 px-4 py-2 self-stretch rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-300 flex-grow-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 inline h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                            <span>Download</span>
                         </a>
                     </div>
                     <div className="flex flex-col">

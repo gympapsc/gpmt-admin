@@ -36,7 +36,7 @@ const api = {
         }
     }),
     
-    downloadData: () => client.get(""),
+    downloadData: () => client.get("/admin/data/export/csv"),
     downloadPhotos: () => client.get("/admin/photos/download"),
     
     addQuestion: (parent_id, question) => client.post(`/admin/questionnaire/${parent_id}`, { question }),
