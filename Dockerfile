@@ -17,9 +17,13 @@ WORKDIR /app
 
 ARG ADMIN_VERSION="0.0.0"
 ARG API_URL="https://api.gympapmt.de"
+ARG RASA_DASHBOARD_URL="https://rasa.gympapmt.de"
+ARG COLAB_URL="https://colab.research.google.com/drive/1X8YKIAhbsw2R-t01dVgXa1zO0xWmB2gF?usp=sharing"
 
 ENV NEXT_PUBLIC_API_URL ${API_URL}
 ENV NEXT_PUBLIC_ADMIN_VERSION ${ADMIN_VERSION}
+ENV NEXT_PUBLIC_RASA_DASHBOARD_URL ${RASA_DASHBOARD_URL}
+ENV NEXT_PUBLIC_COLAB_URL ${COLAB_URL}
 
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
