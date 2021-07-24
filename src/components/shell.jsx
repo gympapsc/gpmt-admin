@@ -16,7 +16,7 @@ const Shell = ({children}) => {
     }
 
     return (
-        <div className="flex flex-col absolute top-0 bottom-0 w-full bg-gray-200">
+        <div className="flex flex-col absolute top-0 bottom-0 w-full bg-gray-200 overflow-hidden">
             <header className="flex-grow-0 w-full h-12 bg-gray-100 border-b border-gray-300 flex flex-row justify-between px-4">
                 <div className="self-center flex flex-row items-center justify-between">
                     <div className="inline-block w-7 h-7">
