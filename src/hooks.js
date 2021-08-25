@@ -7,7 +7,8 @@ import {
     loadPhotos,
     loadUsers,
     loadQuestionnaire,
-    loadRegistrations
+    loadRegistrations,
+    loadStatistics
 } from "./actions"
 
 
@@ -85,7 +86,7 @@ export function useUserStats() {
 
     useEffect(() => {
         if(typeof window !== "undefined" && (registrations === null)) {
-            dispatch(loadRegistrations())
+            dispatch(loadStatistics())
         }
     })
 

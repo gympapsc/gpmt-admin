@@ -5,6 +5,7 @@ import Shell from "../components/shell"
 import { useUsers, useUserStats } from "../hooks"
 import Histogram from "../visualisations/histogram"
 import StepChart from "../visualisations/stepChart"
+import DonutChart from "../visualisations/donutChart"
 
 const Dashboard = () => {
 
@@ -36,7 +37,8 @@ const Dashboard = () => {
                             <div className="col-span-1 border border-gray-300 text-black rounded-md bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
                                 <div className="h-72 px-1 pt-4 pb-3">
-                                    <Histogram data={users.map(u => Math.floor(now.valueOf() - u.birthDate.valueOf()) / (365 * 24 * 3600 * 1000))}></Histogram>
+                                    <StepChart data={registrations}></StepChart>
+                                    {/* <DonutChart data={{weiblich: 4, männlich: 10, divers: 1}}></DonutChart> */}
                                 </div>
                             </div>
                             <div className="col-span-1 border border-gray-300 text-black rounded-md bg-white flex flex-col p-3">

@@ -18,6 +18,7 @@ import {
     deleteQuestion,
     updateQuestion,
     addOption,
+    insertQuestion,
     deleteOption
 } from "../actions"
 
@@ -93,6 +94,23 @@ const QuestionnaireDashboard = () => {
         }))
     }
 
+    let insertNewQuestion = e => {
+        e.preventDefault()
+        e.stopPropagation()
+        dispatch(insertQuestion(question._id, {
+            name: newName,
+            type: newType.key
+        }))
+    }
+
+    let appendQuestion = e => {
+        e.preventDefault()
+        e.stopPropagation()
+        dispatch(addQuestion(question._id, {
+            _id: existingQuestion._id
+        }))
+    }
+
     let question = questionnaire.find(q => q._id === questionId) || {
         name: "",
         condition: [],
@@ -110,8 +128,8 @@ const QuestionnaireDashboard = () => {
     }, [questionnaire])
 
     let tree = useMemo(() => ravelTree(questionnaire), [questionnaire])
+    let [ existingQuestion, setExistingQuestion ] = useState(questionnaire[0])
 
-    console.log(question.condition)
 
     return (
         <Shell>
@@ -135,15 +153,7 @@ const QuestionnaireDashboard = () => {
                                     Wurzel
                                 </span>
                                 :
-                                <button onClick={e => {
-                                    e.preventDefault()
-                                    e.stopPropagation()
-                                    dispatch(deleteQuestion(question._id))
-                                }} disabled={question.root} title="Frage und alle Folgefragen löschen" className="text-red-700 p-2 rounded-lg hover:bg-red-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
+                                null
                             }
                         </div>
                         <div>
@@ -397,6 +407,9 @@ const QuestionnaireDashboard = () => {
                                                     <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                         <span className="sr-only">Bearbeiten</span>
                                                     </th>
+                                                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        <span className="sr-only">Löschen</span>
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
@@ -420,6 +433,17 @@ const QuestionnaireDashboard = () => {
                                                                 </svg>
                                                             </button>
                                                         </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                            <button onClick={event => {
+                                                                event.stopPropagation()
+                                                                event.preventDefault()
+                                                                dispatch(deleteQuestion(question._id, e._id))
+                                                            }} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -430,6 +454,78 @@ const QuestionnaireDashboard = () => {
                             
                         </div>
                         <div>
+                            <h4 className="text-base font-semibold mb-1 text-gray-600">Bestehende Frage</h4>
+                            <label className="text-xs text-gray-600 uppercase" htmlFor="category">Frage</label>
+                            
+                            <Listbox value={existingQuestion} onChange={q => setExistingQuestion(q)}>
+                                <div className="w-full relative">
+                                    <Listbox.Button id="category" className="relative color transition ease-in-out duration-200 border border-gray-300  w-full py-2 md:py-3 pl-3 pr-10 text-left bg-white rounded-lg  cursor-default focus:outline-none focus:ring-2 focus:ring-blue-500 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 text-sm md:text-base">
+                                        <span className="block truncate">{existingQuestion?.name || "Frage"}</span>
+                                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                            <SelectorIcon
+                                                className="w-5 h-5 text-gray-400"
+                                                aria-hidden="true"
+                                            />
+                                        </span>
+                                    </Listbox.Button>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-in duration-75"
+                                        leave="transition ease-in duration-150"
+                                        leaveFrom="opacity-100"
+                                        leaveTo="opacity-0"
+                                    >
+                                        <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-md max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                            {questionnaire
+                                                .filter(q => q._id !== question._id)
+                                                .map(q => (
+                                                <Listbox.Option
+                                                    key={q._id}
+                                                    className={({ active }) =>
+                                                        `${active ? 'text-blue-900 bg-blue-100' : 'text-gray-900'}
+                                                            cursor-default select-none relative py-2 pl-10 pr-4`
+                                                    }
+                                                    value={q}
+                                                >
+                                                    {({ selected, active }) => (
+                                                        <>
+                                                        <span
+                                                            className={`${
+                                                            selected ? 'font-medium' : 'font-normal'
+                                                            } block truncate`}
+                                                        >
+                                                            {q.name}
+                                                        </span>
+                                                        {selected ? (
+                                                            <span
+                                                            className={`${
+                                                                active ? 'text-blue-600' : 'text-blue-600'
+                                                            }
+                                                                    absolute inset-y-0 left-0 flex items-center pl-3`}
+                                                            >
+                                                                <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                                            </span>
+                                                        ) : null}
+                                                        </>
+                                                    )}
+                                                </Listbox.Option>
+                                            ))}
+                                        </Listbox.Options>
+                                    </Transition>
+                                </div>
+                            </Listbox>
+                        </div>
+                        <div>
+                            <button
+                                onClick={appendQuestion}
+                                type="submit" 
+                                className="py-2 px-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right"
+                                >
+                                Frage hinzufügen
+                            </button>
+                        </div>
+                        <div>
+                            <h4 className="text-base font-semibold mb-1 text-gray-600">Neue Frage</h4>
                             <label className="text-xs text-gray-600 uppercase" htmlFor="category">Art</label>
                             <Listbox value={newType} onChange={type => setNewType(type)}>
                                 <div className="w-full relative">
@@ -495,9 +591,22 @@ const QuestionnaireDashboard = () => {
                             <button
                                 onClick={createQuestion}
                                 type="submit" 
-                                className="py-2 px-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right"
+                                className="py-2 px-3 flex flex-row items-center rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right"
                                 >
-                                Frage hinzufügen
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <span>Frage anfügen</span>
+                            </button>
+                            <button
+                                onClick={insertNewQuestion}
+                                type="submit" 
+                                className="py-2 px-3 flex flex-row items-center mx-3 rounded-md bg-blue-600 text-white focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 focus:outline-none focus:ring-offset-gray-100 float-right"
+                                >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <span>Frage einfügen</span>
                             </button>
                         </div>
                     </div>

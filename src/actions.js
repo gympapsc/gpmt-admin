@@ -1,4 +1,5 @@
 import { redirect } from "./utils"
+import api from "./api/http"
 
 export const signInAdmin = password => async (dispatch, getState, { api }) => {
     if(typeof window !== "undefined") {
@@ -125,9 +126,28 @@ export const loadQuestionnaire = () => async (dispatch, getState, { api }) => {
     }
 }
 
-export const loadRegistrations = () => async (dispatch, getState, { api }) => {
+export const loadRegistrations = () => async (dispatch, getState, { }) => {
     if(typeof window !== "undefined") {
-        let { data: { registrations }} = await api.getRegistrations()
+        let { data: { registrations }} = await api.userRegistrationStats()
+
+        registrations = registrations.map(r => ({
+            ...r,
+            date: new Date(r.date)
+        }))
+            .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+
+        dispatch({
+            type: "SET_REGISTRATIONS",
+            payload: {
+                registrations
+            }
+        })
+    }
+}
+
+export const loadStatistics = () => async (dispatch, getState, { api }) => {
+    if(typeof window !== "undefined") {
+        let { data: { registrations }} = await api.userRegistrationStats()
 
         registrations = registrations.map(r => ({
             ...r,
@@ -192,15 +212,22 @@ export const deletePhotoClassificationModel = id => async (dispatch, getState, {
 }
 
 export const addQuestion = (parent_id, q) => async (dispatch, getState, { api }) => {
-    let {data: { question, err }} = await api.addQuestion(parent_id, q)
+    let {data: { question, questionnaire, err }} = await api.addQuestion(parent_id, q)
 
-    dispatch({
-        type: "ADD_QUESTION",
-        payload: {
-            parent_id,
-            question
-        }
-    })
+    // dispatch({
+    //     type: "ADD_QUESTION",
+    //     payload: {
+    //         parent_id,
+    //         question
+    //     }
+    // })
+    dispatch(setQuestionnaire(questionnaire))
+}
+
+export const insertQuestion = (parent_id, q) => async (dispatch, getState, { api }) => {
+    let { data: {questionnaire, err}} = await api.insertQuestion(parent_id, q)
+
+    dispatch(setQuestionnaire(questionnaire))
 }
 
 export const deleteCondition = (question_id, condition_id) => async (dispatch, getState, { api }) => {
@@ -229,23 +256,12 @@ export const updateQuestion = question => async (dispatch, getState, { api }) =>
 }
 
 
+export const deleteQuestion = (parent_id, _id) => async (dispatch, getState, { api }) => {
+    let { data: { ok, questionnaire, err }} = await api.deleteQuestion(parent_id, _id)
 
-export const deleteQuestion = _id => async (dispatch, getState, { api }) => {
-    let { data: { ok, err }} = await api.deleteQuestion(_id)
-
-    let questionnaire = getState().questionnaire
-    let parent = questionnaire.find(q => {
-        return q.next.find(r => r._id === _id)
-    })
-
+    
     if(ok) {
-        dispatch({
-            type: "DELETE_QUESTION",
-            payload: {
-                _id,
-                parent_id: parent._id
-            }
-        })
+        dispatch(setQuestionnaire(questionnaire))
     }
 }
 

@@ -55,11 +55,46 @@ const reducer = (state=initialState, action) => {
                         ...state.questionnaire.find(q => q._id === action.payload.parent_id),
                         next: [
                             ...state.questionnaire.find(q => q._id === action.payload.parent_id).next,
-                            action.payload.question
+                            action.payload.question._id
                         ]
                     }
                 ]
             }
+        case "APPEND_QUESTION":
+            return {
+                ...state,
+                questionnaire: [
+                    ...state.questionnaire.filter(q => q._id !== action.payload.parent_id),
+                    {
+                        ...state.questionnaire.find(q => q._id === action.payload.parent_id),
+                        next: [
+                            ...state.questionnaire.find(q => q._id === action.payload.parent_id).next,
+                            action.payload.next_id
+                        ]
+                    }
+                ]
+            }
+        // case "INSERT_QUESTION":
+        //     return {
+        //         ...state,
+        //         questionnaire: [
+        //             ...state.questionnaire
+        //                 .filter(q => q._id !== action.payload.parent_id)
+        //                 .filter(q => q.next.contains(parent_id)),
+        //             {
+        //                 ...state.questionnaire.find(q => q._id === action.payload.parent_id),
+        //                 next: [
+        //                     action.payload.question._id
+        //                 ]
+        //             },
+        //             {
+        //                 ...action.payload.question,
+        //                 next: [
+        //                     ...state.questionnaire.find(q => q._id === action.payload.parent_id).next,
+        //                 ]
+        //             }
+        //         ]
+        //     }
         case "DELETE_QUESTION":
             return {
                 ...state,
