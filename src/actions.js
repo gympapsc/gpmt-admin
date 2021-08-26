@@ -146,22 +146,22 @@ export const loadRegistrations = () => async (dispatch, getState, { }) => {
 }
 
 export const loadStatistics = () => async (dispatch, getState, { api }) => {
-    if(typeof window !== "undefined") {
-        let { data: { registrations }} = await api.userRegistrationStats()
+    // if(typeof window !== "undefined") {
+    //     let { data: { registrations }} = await api.userRegistrationStats()
 
-        registrations = registrations.map(r => ({
-            ...r,
-            date: new Date(r.date)
-        }))
-            .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+    //     registrations = registrations.map(r => ({
+    //         ...r,
+    //         date: new Date(r.date)
+    //     }))
+    //         .sort((a, b) => a.date.valueOf() - b.date.valueOf())
 
-        dispatch({
-            type: "SET_REGISTRATIONS",
-            payload: {
-                registrations
-            }
-        })
-    }
+    //     dispatch({
+    //         type: "SET_REGISTRATIONS",
+    //         payload: {
+    //             registrations
+    //         }
+    //     })
+    // }
 }
 
 

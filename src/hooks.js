@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import api from "./api/http"
 import { 
     authenticateAdmin,
     loadForecastModels,
@@ -106,4 +107,134 @@ export function useQuestionnaire() {
     })
 
     return questionnaire ||  []
+}
+
+export function useRegistrations() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: registrations } } = await api.userRegistrationStats()
+            registrations = registrations
+                .map(r => ({
+                    ...r,
+                    date: new Date(r.date)
+                }))
+                .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+            setStats(registrations)
+        }
+    })
+    return stats
+}
+
+export function useMicturitionEntryStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: creations } } = await api.micutritionStats()
+            creations = creations
+                .map(r => ({
+                    ...r,
+                    date: new Date(r.date)
+                }))
+                .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+            setStats(creations)
+        }
+    })
+    return stats
+}
+
+export function useDrinkingEntryStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: creations } } = await api.drinkingStats()
+            creations = creations
+                .map(r => ({
+                    ...r,
+                    date: new Date(r.date)
+                }))
+                .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+            setStats(creations)
+        }
+    })
+    return stats
+}
+
+export function useNutritionEntryStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: creations } } = await api.nutritionStats()
+            creations = creations
+                .map(r => ({
+                    ...r,
+                    date: new Date(r.date)
+                }))
+                .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+            setStats(creations)
+        }
+    })
+    return stats
+}
+
+
+export function useGenderStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: sex } } = await api.genderStats()
+            setStats(sex)
+        }
+    })
+    return stats
+}
+
+export function useMSStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: ms } } = await api.micutritionStats()
+            setStats(ms)
+        }
+    })
+    return stats
+}
+
+export function useBMIStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { bmi }} = await api.bmiStats()
+            setStats(bmi)
+        }
+    })
+    return stats
+}
+
+export function useAgeStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: ages }} = await api.ageStats()
+            setStats(ages)
+        }
+    })
+    return stats
+}
+
+export function usePhotoStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: uploads }} = await api.photoUploadStats()
+            uploads = uploads
+                .map(r => ({
+                    ...r,
+                    date: new Date(r.date)
+                }))
+                .sort((a, b) => a.date.valueOf() - b.date.valueOf())
+            setStats(uploads)
+        }
+    })
+    return stats
 }

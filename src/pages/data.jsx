@@ -7,6 +7,8 @@ import { useForecastModels, useUsers, useUserStats } from "../hooks"
 import api from "../api/http"
 import { activateForecastModel, deleteForecastModel, addForecastModel } from "../actions"
 import StepChart from "../visualisations/stepChart"
+import UserRegistrationChart from "../visualisations/registrationChart"
+import EntryChart from "../visualisations/entryChart"
 
 const itemCount = 15
 
@@ -90,7 +92,7 @@ const DataDashboard = () => {
                     </div>
                     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="col-span-full h-72 text-black rounded-md bg-white flex flex-col py-6 px-4">
-                            <StepChart data={registrations}></StepChart>
+                            <EntryChart />
                         </div>
                         <div className="col-span-full text-black rounded-md bg-white flex flex-col">
                             <div className="-my-2 overflow-x-auto">

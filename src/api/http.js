@@ -53,10 +53,11 @@ const api = {
 
     genderStats: () => client.get("/admin/statistics/gender"),
     bmiStats: () => client.get("/admin/statistics/bmi"),
+    ageStats: () => client.get("/admin/statistics/age"),
     micutritionStats: () => client.get("/admin/statistics/micturition"), 
     nutritionStats: () => client.get("/admin/statistics/nutrition"),
     drinkingStats: () => client.get("/admin/statistics/drinking"),
-    photoUploadStats: () => client.get("/admin/statistics/photo"),
+    photoUploadStats: () => client.get("/admin/statistics/photos"),
     userRegistrationStats: () => client.get("/admin/statistics/registrations")
 }
 
