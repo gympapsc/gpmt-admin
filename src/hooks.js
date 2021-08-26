@@ -193,7 +193,7 @@ export function useMSStats() {
     let [stats, setStats] = useState(null)
     useEffect(async () => {
         if(typeof window !== "undefined" && stats === null) {
-            let { data: { stats: ms } } = await api.micutritionStats()
+            let { data: { stats: ms } } = await api.msStats()
             setStats(ms)
         }
     })

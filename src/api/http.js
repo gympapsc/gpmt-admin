@@ -58,7 +58,8 @@ const api = {
     nutritionStats: () => client.get("/admin/statistics/nutrition"),
     drinkingStats: () => client.get("/admin/statistics/drinking"),
     photoUploadStats: () => client.get("/admin/statistics/photos"),
-    userRegistrationStats: () => client.get("/admin/statistics/registrations")
+    userRegistrationStats: () => client.get("/admin/statistics/registrations"),
+    msStats: () => client.get("/admin/statistics/ms")
 }
 
 export default api

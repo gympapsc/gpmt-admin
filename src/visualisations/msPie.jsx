@@ -6,10 +6,12 @@ const MSPie = ({ xlabel, ylabel}) => {
     let element = useRef(null)
 
     let stats = useMSStats()
+
+    console.log(stats)
     
 
     useEffect(() => {
-        stats = stats || {}
+        stats = stats || []
 
         if(!element.current) {
             return
