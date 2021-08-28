@@ -256,6 +256,59 @@ export const updateQuestion = question => async (dispatch, getState, { api }) =>
 }
 
 
+export const deleteAllQuestions = () => async (dispatch, getState, { api }) => {
+    await api.deleteQuestionnaire()
+
+    dispatch({
+        type: "DELETE_ALL_QUESTIONS",
+        payload: {}
+    })
+}
+
+export const deleteAllMicturition = () => async (dispatch, getState, { api }) => {
+    await api.deleteAllMicturition()
+
+    dispatch({
+        type: "DELETE_ALL_MICTURITION",
+        payload: {}
+    })
+}
+
+export const deleteAllDrinking = () => async (dispatch, getState, { api }) => {
+    await api.deleteAllDrinking()
+
+    dispatch({
+        type: "DELETE_ALL_DRINKING",
+        payload: {}
+    })
+}
+
+export const deleteAllNutrition = () => async (dispatch, getState, { api }) => {
+    await api.deleteAllNutrition()
+
+    dispatch({
+        type: "DELETE_ALL_NUTRITION",
+        payload: {}
+    })
+}
+
+export const deleteUser = id => async (dispatch, getState, { api }) => {
+    await api.deleteUser(id)
+
+    dispatch({
+        type: "DELETE_USER",
+        payload: {
+            _id: id
+        }
+    })
+}
+
+export const resetAll = () => async (dispatch, getState, { api }) => {
+    await api.resetAll()
+
+    redirect("/signin")
+}
+
 export const deleteQuestion = (parent_id, _id) => async (dispatch, getState, { api }) => {
     let { data: { ok, questionnaire, err }} = await api.deleteQuestion(parent_id, _id)
 

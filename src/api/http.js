@@ -48,6 +48,15 @@ const api = {
     deleteQuestionCondition: (id, next_id, condition_id) => client.delete(`/admin/questionnaire/${id}/${next_id}/condition/${condition_id}`),
     deleteQuestion: (parent_id, _id) => client.delete(`/admin/questionnaire/${parent_id}/${_id}`),
     deleteQuestionOption: (id, option_id) => client.delete(`/admin/questionnaire/${id}/option/${option_id}`),
+    deleteAllQuestionnaire: () => client.delete("/admin/questionnaire"),
+    deleteAllMicturition: () => client.delete("/admin/data/micturition"),
+    deleteAllDrinking: () => client.delete("/admin/data/drinking"),
+    deleteAllNutrition: () => client.delete("/admin/data/nutrition"),
+    deleteAllStress: () => client.delete("/admin/data/stress"),
+    deleteAllMedication: () => client.delete("/admin/data/medication"),
+    deleteUser: (_id) => client.delete(`/admin/data/user/${_id}`),
+
+    resetAll: () => client.delete(`/admin/data`),
 
     updateQuestion: (_id, question) => client.put(`/admin/questionnaire/${_id}`, { question }),
 

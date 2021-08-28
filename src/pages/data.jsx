@@ -5,7 +5,7 @@ import Secure from "../components/secure"
 import Shell from "../components/shell"
 import { useForecastModels, useUsers, useUserStats } from "../hooks"
 import api from "../api/http"
-import { activateForecastModel, deleteForecastModel, addForecastModel } from "../actions"
+import { activateForecastModel, deleteForecastModel, addForecastModel, deleteUser } from "../actions"
 import StepChart from "../visualisations/stepChart"
 import UserRegistrationChart from "../visualisations/registrationChart"
 import EntryChart from "../visualisations/entryChart"
@@ -199,6 +199,9 @@ const DataDashboard = () => {
                                                 <th scope="col" className="relative px-6 py-3">
                                                     <span className="sr-only">Download</span>
                                                 </th>
+                                                <th scope="col" className="relative px-6 py-3">
+                                                    <span className="sr-only">Löschen</span>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
@@ -220,8 +223,13 @@ const DataDashboard = () => {
                                                         {new Date(user.timestamp).toLocaleDateString()}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
-                                                        <button  className="text-blue-600 hover:text-blue-700 hover:bg-blue-200 transition-colors duration-100 rounded-md px-3 py-2 text-right">
+                                                        <button  className="text-blue-600 hover:text-blue-700 hover:bg-blue-100 transition-colors duration-100 rounded-md px-3 py-2 text-right">
                                                             Download
+                                                        </button>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-right">
+                                                        <button onClick={() => dispatch(deleteUser(user._id))} className="text-blue-600 hover:text-blue-700 hover:bg-blue-100 transition-colors duration-100 rounded-md px-3 py-2 text-right">
+                                                            Löschen
                                                         </button>
                                                     </td>
                                                 </tr>
