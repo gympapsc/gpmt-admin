@@ -238,3 +238,14 @@ export function usePhotoStats() {
     })
     return stats
 }
+
+export function useIncontinenceStats() {
+    let [stats, setStats] = useState(null)
+    useEffect(async () => {
+        if(typeof window !== "undefined" && stats === null) {
+            let { data: { stats: incontinence } } = await api.incontinenceStats()
+            setStats(incontinence)
+        }
+    })
+    return stats
+}

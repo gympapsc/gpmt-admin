@@ -2,16 +2,15 @@ import React, {useRef, useEffect} from "react"
 import * as d3 from "d3"
 
 import {
-    usePhotoStats
+    useBMIStats
 } from "../hooks"
 
-const PhotoUploadChart = ({xlabel, ylabel}) => {
+const WeightHeightChart = ({users, xlabel, ylabel}) => {
     let element = useRef(null)
-
-    let photoUploadStats = usePhotoStats() || []
 
 
     useEffect(() => {
+        users = users || []
 
         let margin = {top: 10, right: 20, bottom: 20, left: 20},
             width = element.current.clientWidth - margin.left - margin.right,
@@ -25,19 +24,17 @@ const PhotoUploadChart = ({xlabel, ylabel}) => {
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")")
 
-        let now = new Date()
 
-        let x = d3.scaleTime()
-            .domain([
-                new Date(now.getFullYear(), now.getMonth(), now.getDate() - 90, now.getHours()), 
-                new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours())
-            ])
-            .range([ 0, width ])
-            .clamp(true)
-            
+        let heights = users.map(s => s.height)
+        let weights = users.map(s => s.weight)
+
+        let x = d3.scaleLinear()
+            .domain([Math.min(d3.min(weights) - 10, 0), d3.max(weights) + 10])
+            .range([0, width])
+
         Svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(7))
+            .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(8))
             .call(g =>
                 g.selectAll(".tick")
                 .selectAll("text")
@@ -45,32 +42,32 @@ const PhotoUploadChart = ({xlabel, ylabel}) => {
             )
             .select(".domain").remove()
 
+
         let y = d3.scaleLinear()
-            .domain([0, 10])
+            .domain([0, d3.max(heights) + 5])
             .range([ height, 0])
             .nice()
 
         Svg.append("g")
-            .call(d3.axisLeft(y).tickSize(-width*1.3).ticks(7))
+            .call(d3.axisLeft(y).tickSize(-width*1.3).ticks(3))
             .select(".domain").remove()
 
         Svg.selectAll(".tick line")
             .attr("stroke", "#EBEBEB")
 
-        Svg.append("path")
-            .datum(photoUploadStats)
-            .attr("fill", "none")
-            .attr("stroke", "blue")
-            .attr("stroke-width", 3)
-            .attr("d", d3.line()
-                .x(d => x(d.date))
-                .y(d => y(d.uploads))
-                .curve(d3.curveStep))
+        Svg.selectAll("rect")
+            .data(users)
+            .enter()
+            .append("circle")
+              .attr("r", 2)
+              .attr("cx", d => x(d.weight))
+              .attr("cy", d => y(d.height))
+              .style("fill", "blue")
         
         return () => {
             if(element.current) {
                 for(let child of element.current.children) {
-                    if(child) child.remove()
+                    child.remove()
                 }
             }
         }
@@ -81,4 +78,4 @@ const PhotoUploadChart = ({xlabel, ylabel}) => {
     )
 }
 
-export default PhotoUploadChart
+export default WeightHeightChart

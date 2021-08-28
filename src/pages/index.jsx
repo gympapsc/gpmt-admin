@@ -13,6 +13,8 @@ import EntryChart from "../visualisations/entryChart"
 import AgeChart from "../visualisations/ageChart"
 import PhotoUploadChart from "../visualisations/photoUploadChart"
 import MSPie from "../visualisations/msPie"
+import IncontinencePie from "../visualisations/incontinencePie"
+import WeightHeightChart from "../visualisations/weightHeightChart"
 
 const Dashboard = () => {
 
@@ -43,25 +45,27 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="col-span-1 border border-gray-300 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlechter</h3>
                                 <div className="h-72 px-1 pt-4 pb-3">
                                     <GenderPie />
-                                    {/* <StepChart data={registrations}></StepChart> */}
-                                    {/* <DonutChart data={{weiblich: 4, männlich: 10, divers: 1}}></DonutChart> */}
                                 </div>
                             </div>
                             <div className="col-span-1 border border-gray-300 text-black rounded-lg bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Altersverteilung</h3>
                                 <div className="h-72 px-1 pt-4 pb-3">
                                     <AgeChart />
-                                    {/* <Histogram data={users.map(u => Math.floor(now.valueOf() - u.birthDate.valueOf()) / (365 * 24 * 3600 * 1000))}></Histogram> */}
                                 </div>
                             </div>
                             <div className="col-span-1 border border-gray-300 text-black rounded-lg bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">BMI-Verteilung</h3>
                                 <div className="h-72 px-1 pt-4 pb-3">
-                                    {/* <Histogram data={users.map(u => Math.round(u.weight / (u.height / 100)))}></Histogram> */}
                                     <BMIChart />
+                                </div>
+                            </div>
+                            <div className="col-span-1 border border-gray-300 text-black rounded-lg bg-white flex flex-col p-3">
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Gewicht zu Köpergröße</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <WeightHeightChart users={users} />
                                 </div>
                             </div>
                         </div>
@@ -75,33 +79,16 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
+                        <div className="grid grid-cols-1 w-full gap-2">
                             <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Miktionseinträge</h3>
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Einträge</h3>
                                 <div className="h-72 px-1 pt-4 pb-3">
                                     <EntryChart />
-                                </div>
-                            </div>
-                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Trinkeinträge</h3>
-                                <div className="h-72 px-1 pt-4 pb-3">
-                                    <EntryChart />
-                                </div>
-                            </div>
-                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Esseinträge</h3>
-                                <div className="h-72 px-1 pt-4 pb-3">
-                                    <EntryChart />
-                                </div>
-                            </div>
-                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Geschlecht</h3>
-                                <div className="h-72 px-1 pt-4 pb-3">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <div className="w-full flex flex-row">
                             <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Miktion</h4>
                             <div className="ml-auto text-gray-700 hover:text-gray-900 self-center">
@@ -124,7 +111,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                         <div className="w-full flex flex-row">
                             <h4 className="text-lg font-semibold text-gray-700 tracking-wide">Bilder</h4>
@@ -134,20 +121,12 @@ const Dashboard = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
-                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
+                        <div className="grid grid-cols-1  w-full gap-2">
+                            <div className="col-span-1 border border-gray-300 text-black rounded-lg bg-white flex flex-col p-3">
                                 <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Uploads</h3>
                                 <div className="h-72 px-1 pt-4 pb-3">
                                     {/* <Histogram data={users.map(u => Math.round(u.weight / (u.height / 100)))}></Histogram> */}
                                     <PhotoUploadChart />
-                                </div>
-                            </div>
-                            <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Recall</h3>
-                                <div className="h-72 px-1 pt-4 pb-3">
-                                    {/* <Histogram data={users.map(u => Math.round(u.weight / (u.height / 100)))}></Histogram> */}
-                                    <GenderPie />
-
                                 </div>
                             </div>
                         </div>
@@ -163,10 +142,16 @@ const Dashboard = () => {
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-2">
                             <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Vorerkrankungen</h3>
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Multiple Sklerose</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <MSPie />
+                                </div>
                             </div>
                             <div className="col-span-1 border border-gray-300 row-span-2 text-black rounded-lg bg-white flex flex-col p-3">
-                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Recall</h3>
+                                <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">Inkontinenz</h3>
+                                <div className="h-72 px-1 pt-4 pb-3">
+                                    <IncontinencePie />
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -7,26 +7,27 @@ export const redirect = path => {
 export const treeFactory = questionnaire => {
     let root = questionnaire.find(q => q.root)
     if(!root) {
-        throw Error("No root in questionnaire found")
+        return {}
     }
 
     function branch(question) {
         for(let i = 0; i < question.next.length; i++) {
             if(!question.next[i].name) {
-                next = questions.filter(q => q._id === root.next[i])[0]
+                next = questionnaire.find(q => q._id === question.next[i]._id && q._id !== question._id)
                 if(!next) {
                     // reference to question not found
                     continue
                 }
-                root.next[i] = next
+                next.condition = question.next[i].condition
+                question.next[i] = next
             }
 
             if(question.next[i]) {
-                next = questionnaire.filter(q => q._id === question.next[i]._id)[0]
-                root.next[i] = ravelBranch(next)
+                next = questionnaire.find(q => q._id === question.next[i]._id)
+                question.next[i] = branch(next)
             }
         }
-        return root
+        return question
     }
 
     return branch(root)

@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useState, useMemo } from "react"
 import Link from "next/link"
-import { Listbox, Switch, Transition } from "@headlessui/react"
+import { Listbox, Transition, Disclosure} from "@headlessui/react"
+
 import { SelectorIcon, CheckIcon } from "@heroicons/react/solid"
 
-import { ravelTree, shorten } from "../utils"
+import { shorten, treeFactory } from "../utils"
 import Secure from "../components/secure"
 import Shell from "../components/shell"
 import QuestionnaireTree from "../visualisations/questionnaireTree"
@@ -127,9 +128,26 @@ const QuestionnaireDashboard = () => {
         setQuestionId(questionnaire.find(q => q.root)?._id)
     }, [questionnaire])
 
-    let tree = useMemo(() => ravelTree(questionnaire), [questionnaire])
+    let tree = useMemo(() => treeFactory(questionnaire), [questionnaire])
     let [ existingQuestion, setExistingQuestion ] = useState(questionnaire[0])
+    let nextQuestions = question.next
+        .map(({_id, condition}) => ({
+            question: questionnaire.find(q => q._id === _id),
+            condition
+        }))
 
+
+    const onClickDeleteQuestion = _id => e => {
+        e.preventDefault()
+        e.stopPropagation()
+        dispatch(deleteQuestion(question._id, _id))
+    } 
+
+    const onClickOpenQuestion = _id => e => {
+        e.preventDefault()
+        e.stopPropagation()
+        setQuestionId(_id)
+    }
 
     return (
         <Shell>
@@ -275,7 +293,7 @@ const QuestionnaireDashboard = () => {
                             </>
                         }
                         <hr/>
-                        {
+                        {/* {
                             question.root || 
                             <>
                                 <div>
@@ -389,70 +407,76 @@ const QuestionnaireDashboard = () => {
                                 </div>
                                 <hr/>
                             </>
-                        }
+                        } */}
                         <div>
                             <label className="text-lg font-semibold mb-1" htmlFor="category">Folgefragen</label>
-                            <div className="my-2 overflow-x-auto">
-                                <div className="py-2 align-middle inline-block min-w-full">
-                                    <div className="border overflow-hidden border-gray-200 sm:rounded-lg">
-                                        <table className="min-w-full divide-y divide-gray-200">
-                                            <thead className="bg-gray-50">
-                                                <tr>
-                                                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                        Frage
-                                                    </th>
-                                                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                        Art
-                                                    </th>
-                                                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                        <span className="sr-only">Bearbeiten</span>
-                                                    </th>
-                                                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                        <span className="sr-only">Löschen</span>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="bg-white divide-y divide-gray-200">
-
-                                                {question.next.map((e, i) => (
-                                                    <tr key={i}>
-                                                        <td className="px-6 py-4 whitespace-nowrap" title={e.name}>
-                                                            {shorten(e.name, 16)}
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                            {e.type}
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                            <button onClick={event => {
-                                                                event.stopPropagation()
-                                                                event.preventDefault()
-                                                                setQuestionId(e._id)
-                                                            }} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                                                </svg>
-                                                            </button>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                            <button onClick={event => {
-                                                                event.stopPropagation()
-                                                                event.preventDefault()
-                                                                dispatch(deleteQuestion(question._id, e._id))
-                                                            }} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                                </svg>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            
+                            {nextQuestions.map(({question, condition}) => (
+                                <Disclosure as="div" className="w-full py-2">
+                                    <Disclosure.Button className="w-full rounded-lg bg-white text-left px-4 py-3">
+                                        <div className="flex flex-row justify-between items-center">
+                                            <div>
+                                                {question.name} &#8226; <span className="text-gray-500">{question.type}</span>
+                                            </div>
+                                            <div>
+                                                <button onClick={onClickOpenQuestion(question._id)} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                                    </svg>
+                                                </button>
+                                                <button onClick={onClickDeleteQuestion(question._id)} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="p-3">
+                                        <div className="mb-2 overflow-x-auto">
+                                            <div className="py-2 align-middle inline-block min-w-full">
+                                                <div className="border overflow-hidden border-gray-200 sm:rounded-lg">
+                                                    <table className="min-w-full divide-y divide-gray-200">
+                                                        <thead className="bg-gray-50">
+                                                            <tr>
+                                                                <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                    Bedingungen
+                                                                </th>
+                                                                <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                    Wert
+                                                                </th>
+                                                                <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                    <span className="sr-only">Löschen</span>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="bg-white divide-y divide-gray-200">
+                                                            {condition.map((c, i) => (
+                                                                <tr key={i}>
+                                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                                        {c.type}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-nowrap" title={c.value}>
+                                                                        {shorten(c.value, 16)}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                                        <button onClick={removeCondition(c._id)} className="text-indigo-600 p-2 hover:bg-indigo-100 rounded-lg transition-colors ease-in-out duration-100">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                                            </svg>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Disclosure.Panel>
+                                </Disclosure>
+                            ))}
                         </div>
+                        <hr />
                         <div>
                             <h4 className="text-base font-semibold mb-1 text-gray-600">Bestehende Frage</h4>
                             <label className="text-xs text-gray-600 uppercase" htmlFor="category">Frage</label>

@@ -30,7 +30,7 @@ const UserRegistrationChart = ({xlabel, ylabel}) => {
 
         let x = d3.scaleTime()
             .domain([
-                new Date(now.getFullYear(), now.getMonth(), now.getDate() - 10, now.getHours()), 
+                new Date(now.getFullYear(), now.getMonth(), now.getDate() - 90, now.getHours()), 
                 new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours())
             ])
             .range([ 0, width ])
@@ -38,7 +38,7 @@ const UserRegistrationChart = ({xlabel, ylabel}) => {
             
         Svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(7))
+            .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(5))
             .call(g =>
                 g.selectAll(".tick")
                 .selectAll("text")

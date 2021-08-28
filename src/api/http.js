@@ -42,10 +42,10 @@ const api = {
     
     addQuestion: (parent_id, question) => client.post(`/admin/questionnaire/${parent_id}`, { question }),
     insertQuestion: (child_id, question) => client.post(`/admin/questionnaire/${child_id}?insert=1`, { question }),
-    addCondition: (_id, condition) => client.post(`/admin/questionnaire/${_id}/condition`, { condition }),
+    addCondition: (_id, next_id, condition) => client.post(`/admin/questionnaire/${_id}/${next_id}/condition`, { condition }),
     addOption: (_id, option) => client.post(`/admin/questionnaire/${_id}/option`, { option } ),
 
-    deleteQuestionCondition: (id, condition_id) => client.delete(`/admin/questionnaire/${id}/condition/${condition_id}`),
+    deleteQuestionCondition: (id, next_id, condition_id) => client.delete(`/admin/questionnaire/${id}/${next_id}/condition/${condition_id}`),
     deleteQuestion: (parent_id, _id) => client.delete(`/admin/questionnaire/${parent_id}/${_id}`),
     deleteQuestionOption: (id, option_id) => client.delete(`/admin/questionnaire/${id}/option/${option_id}`),
 
@@ -59,7 +59,8 @@ const api = {
     drinkingStats: () => client.get("/admin/statistics/drinking"),
     photoUploadStats: () => client.get("/admin/statistics/photos"),
     userRegistrationStats: () => client.get("/admin/statistics/registrations"),
-    msStats: () => client.get("/admin/statistics/ms")
+    msStats: () => client.get("/admin/statistics/ms"),
+    incontinenceStats: () => client.get("/admin/statistics/incontinence")
 }
 
 export default api

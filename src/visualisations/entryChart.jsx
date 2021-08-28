@@ -33,7 +33,7 @@ const EntryChart = ({xlabel, ylabel}) => {
 
         let x = d3.scaleTime()
             .domain([
-                new Date(now.getFullYear(), now.getMonth(), now.getDate() - 10, now.getHours()), 
+                new Date(now.getFullYear(), now.getMonth(), now.getDate() - 90, now.getHours()), 
                 new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours())
             ])
             .range([ 0, width ])
