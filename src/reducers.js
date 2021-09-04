@@ -74,27 +74,6 @@ const reducer = (state=initialState, action) => {
                     }
                 ]
             }
-        // case "INSERT_QUESTION":
-        //     return {
-        //         ...state,
-        //         questionnaire: [
-        //             ...state.questionnaire
-        //                 .filter(q => q._id !== action.payload.parent_id)
-        //                 .filter(q => q.next.contains(parent_id)),
-        //             {
-        //                 ...state.questionnaire.find(q => q._id === action.payload.parent_id),
-        //                 next: [
-        //                     action.payload.question._id
-        //                 ]
-        //             },
-        //             {
-        //                 ...action.payload.question,
-        //                 next: [
-        //                     ...state.questionnaire.find(q => q._id === action.payload.parent_id).next,
-        //                 ]
-        //             }
-        //         ]
-        //     }
         case "DELETE_QUESTION":
             return {
                 ...state,
@@ -129,12 +108,7 @@ const reducer = (state=initialState, action) => {
                 ...state,
                 questionnaire: [
                     ...state.questionnaire.filter(q => q._id !== action.payload.question_id),
-                    {
-                        ...state.questionnaire.find(q => q._id === action.payload.question_id),
-                        condition: state.questionnaire
-                            .find(q => q._id === action.payload.question_id).condition
-                                .filter(c => c._id !== action.payload.condition_id)
-                    }
+                    action.payload.question
                 ]
             }
         case "ADD_QUESTION_OPTION":

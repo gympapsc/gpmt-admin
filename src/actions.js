@@ -230,14 +230,14 @@ export const insertQuestion = (parent_id, q) => async (dispatch, getState, { api
     dispatch(setQuestionnaire(questionnaire))
 }
 
-export const deleteCondition = (question_id, condition_id) => async (dispatch, getState, { api }) => {
-    let { data: { ok }} = await api.deleteQuestionCondition(question_id, condition_id)
+export const deleteCondition = (question_id, next_id, condition_id) => async (dispatch, getState, { api }) => {
+    let { data: { ok, question}} = await api.deleteQuestionCondition(question_id, next_id, condition_id)
 
     dispatch({
         type: "DELETE_QUESTION_CONDITION",
         payload: {
             question_id,
-            condition_id
+            question
         }
     })
 }
@@ -318,8 +318,8 @@ export const deleteQuestion = (parent_id, _id) => async (dispatch, getState, { a
     }
 }
 
-export const addCondition = (question_id, c) => async (dispatch, getState, { api }) => {
-    let { data: {ok, question}} = await api.addCondition(question_id, c)
+export const addCondition = (question_id, next_id, condition) => async (dispatch, getState, { api }) => {
+    let { data: {ok, question}} = await api.addCondition(question_id, next_id, condition)
 
     if(ok) {
         dispatch({
