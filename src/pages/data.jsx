@@ -20,7 +20,6 @@ const DataDashboard = () => {
     let dispatch = useDispatch()
     let users = useUsers()
 
-
     let selectedModel = e => {
         e.preventDefault()
         let formData = new FormData()
@@ -70,7 +69,7 @@ const DataDashboard = () => {
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Täglich aktive Nutzer</h3>
                             </div>
                             <div className="mt-auto p-3">
-                                <span className="text-2xl md:text-3xl font-bold">10<span className="text-base font-medium text-gray-700"> Nutzer</span></span>
+                                <span className="text-2xl md:text-3xl font-bold">{users?.length}<span className="text-base font-medium text-gray-700"> Nutzer</span></span>
                             </div>
                         </div>
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">
@@ -78,7 +77,7 @@ const DataDashboard = () => {
                                 <h3 className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monatlich aktive Nutzer</h3>
                             </div>
                             <div className="mt-auto p-3">
-                                <span className="text-2xl md:text-3xl font-bold">62</span><span className="text-base font-medium text-gray-700"> Nutzer</span>
+                                <span className="text-2xl md:text-3xl font-bold">{users?.length}</span><span className="text-base font-medium text-gray-700"> Nutzer</span>
                             </div>
                         </div>
                         <div className="col-span-1 h-24 text-black rounded-md bg-white flex flex-col">

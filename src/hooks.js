@@ -143,11 +143,11 @@ export function useMicturitionEntryStats() {
     return stats
 }
 
-export function useDrinkingEntryStats() {
+export function useHydrationEntryStats() {
     let [stats, setStats] = useState(null)
     useEffect(async () => {
         if(typeof window !== "undefined" && stats === null) {
-            let { data: { stats: creations } } = await api.drinkingStats()
+            let { data: { stats: creations } } = await api.hydrationStats()
             creations = creations
                 .map(r => ({
                     ...r,

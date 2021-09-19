@@ -3,7 +3,7 @@ import * as d3 from "d3"
 
 import {
     useMicturitionEntryStats,
-    useDrinkingEntryStats,
+    useHydrationEntryStats,
     useNutritionEntryStats
 } from "../hooks"
 
@@ -11,7 +11,7 @@ const EntryChart = ({xlabel, ylabel}) => {
     let element = useRef(null)
 
     let micturitionStats = useMicturitionEntryStats() || []
-    let drinkingStats = useDrinkingEntryStats() || []
+    let hydrationStats = useHydrationEntryStats() || []
     let nutritionStats = useNutritionEntryStats() || []
 
 
@@ -72,7 +72,7 @@ const EntryChart = ({xlabel, ylabel}) => {
                 .curve(d3.curveStep))
         
         Svg.append("path")
-            .datum(drinkingStats)
+            .datum(hydrationStats)
             .attr("fill", "none")
             .attr("stroke", "purple")
             .attr("stroke-width", 3)

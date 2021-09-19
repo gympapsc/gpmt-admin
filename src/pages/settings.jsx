@@ -2,7 +2,7 @@ import React from "react"
 
 import Shell from "../components/shell"
 import Secure from "../components/secure"
-import { deleteAllDrinking, deleteAllMicturition, deleteAllNutrition, deleteAllQuestions, resetAll} from "../actions"
+import { deleteAllHydration, deleteAllMicturition, deleteAllNutrition, deleteAllQuestions, resetAll} from "../actions"
 import { useDispatch } from "react-redux"
 
 const Settings = () => {
@@ -40,7 +40,7 @@ const Settings = () => {
                                 <h3 className="font-semibold mb-1">Alle Trinkdaten löschen</h3>
                                 <p className="text-gray-500 text-sm">Löscht unwiderruflich alle Trinkeinträge. Es werden keine Nutzer gelöscht.</p>
                             </div>
-                            <button className="px-3 py-2 border border-red-700 bg-red-600 font-semibold text-white rounded-md text-sm" onClick={() => dispatch(deleteAllDrinking())}>
+                            <button className="px-3 py-2 border border-red-700 bg-red-600 font-semibold text-white rounded-md text-sm" onClick={() => dispatch(deleteAllHydration())}>
                                 Trinkdaten löschen
                             </button>
                         </div>

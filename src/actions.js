@@ -274,8 +274,8 @@ export const deleteAllMicturition = () => async (dispatch, getState, { api }) =>
     })
 }
 
-export const deleteAllDrinking = () => async (dispatch, getState, { api }) => {
-    await api.deleteAllDrinking()
+export const deleteAllHydration = () => async (dispatch, getState, { api }) => {
+    await api.deleteAllHydration()
 
     dispatch({
         type: "DELETE_ALL_DRINKING",

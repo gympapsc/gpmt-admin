@@ -6,9 +6,11 @@ import Image from "next/image"
 import { Menu, Transition } from "@headlessui/react"
 import { LogoutIcon } from '@heroicons/react/solid'
 import { signOutAdmin } from "../actions"
+import { useAdmin } from "../hooks"
 
 
 const Shell = ({children}) => {
+    let admin = useAdmin()
     let dispatch = useDispatch()
 
     const signOut = () => {
@@ -28,6 +30,8 @@ const Shell = ({children}) => {
                 </div>
                 <Menu className="relative inline-block text-left" as="div">
                     <Menu.Button className="flex justify-center items-center transform scale-110 my-2 text-gray-700 hover:text-gray-900">
+                        <span className="mr-2">{admin?.firstname}</span>
+
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
